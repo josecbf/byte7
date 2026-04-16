@@ -159,3 +159,131 @@ renderizam o wrapper passando `userName`.
 **Consequências:**
 - Ícones vivem no client, onde podem ser serializados pela árvore React.
 - Adicionar um item ao menu = editar o wrapper (arquivo pequeno, local).
+
+---
+
+## ADR-010 — Separação finance (cálculo) × benchmarks (dados)
+
+**Contexto:** ao adicionar comparativos ao dashboard (CDI, Poupança,
+IPCA, Ibovespa), precisávamos de dois tipos de coisa bem diferentes:
+(a) funções puras de cálculo, reutilizáveis; (b) dados mockados com
+taxas realistas.
+
+**Decisão:** duas caixas separadas.
+- `src/utils/finance.ts` — lógica pura: `buildSeries(aportes, rateFn)`,
+  `accumulatedReturn(rates[])`, `totalReturnRate(invested, balance)`.
+  Não conhece mocks, não conhece benchmarks específicos.
+- `src/mocks/benchmarks.ts` — dados: taxas mensais por benchmark,
+  série mockada do Ibovespa, labels e cores. Nenhum cálculo.
+- `src/mocks/investor.ts` — orquestra os dois: compõe `rateFn` a partir
+  de `getMonthlyRate(key, i)` e chama `buildSeries` para montar as
+  séries consumidas pelo dashboard.
+
+**Consequências:**
+- Testes unitários de cálculo passam a ser triviais (sem mock).
+- Adicionar um novo benchmark = editar só `benchmarks.ts` + uma linha
+  em `buildChartEvolution` / `buildComparative`.
+- `buildMonthlyEvolution` (API antiga) foi preservada: agora é um
+  wrapper fino sobre `buildSeries` com rate constante. Nada quebra
+  nas telas que já a consumiam.
+
+---
+
+## ADR-011 — Ibovespa mockado com série cíclica determinística
+
+**Contexto:** CDI, Poupança e IPCA são taxas "comportadas" e podem ser
+aproximadas por valores mensais constantes. Ibovespa é volátil — se
+usássemos constante, o gráfico ficaria uma reta equivalente a um
+benchmark calmo, descaracterizando a comparação.
+
+**Decisão:** `IBOV_MONTHLY_RATES` é um array com 18 meses de variações
+entre ~-4% e ~+5%, misturando positivos e negativos. Quando a janela
+de análise for mais longa que o array, ciclamos via módulo
+(`i % array.length`). Valores foram escolhidos à mão para parecerem
+realistas; não são uma série histórica real.
+
+**Consequências:**
+- A curva do Ibovespa no gráfico oscila de verdade, o que dá mais
+  credibilidade ao comparativo.
+- Determinístico: a tabela e o gráfico sempre batem entre si e sempre
+  renderizam a mesma coisa para o mesmo intervalo de aportes.
+- Trocar por série real = trocar apenas o array (ou apontar para uma
+  API), sem mexer em `getMonthlyRate` nem em quem consome.
+
+---
+
+## ADR-012 — Banner demonstrativo global via root layout
+
+**Contexto:** precisávamos de um aviso discreto, mas universal, de
+que a aplicação está em versão demonstrativa. Colocar em cada layout
+de área (site, admin, investidor, login) duplica markup e corre o
+risco de alguém esquecer em uma nova rota.
+
+**Decisão:** um único componente `DemoBanner` renderizado dentro do
+`<body>` do `src/app/layout.tsx` (root layout). Assim, qualquer rota
+nova herda automaticamente o aviso. Barra slim, cor ink-900, texto
+ink-200, 11px — visualmente baixa, presente em 100% das páginas.
+Não é sticky para não competir com navbars/sidebars das áreas
+autenticadas.
+
+**Consequências:**
+- Cobertura universal sem duplicação.
+- Remover/alterar o banner = editar um único arquivo.
+- Quando a aplicação sair de "demo", basta excluir o componente e a
+  linha no root layout — zero impacto no resto.
+
+---
+
+## ADR-013 — Cadastro de investidor (admin) separado do usuário de login
+
+**Contexto:** o admin precisa gerenciar "investidores" (criar, listar,
+editar, excluir). Já existe `MOCK_USERS` para autenticação. Misturar
+os dois confunde conceitos e engessa a migração para auth real.
+
+**Decisão:** dois conjuntos separados.
+- `src/mocks/users.ts` — usuários de login (admin + investor user
+  de demo). Usado pelo middleware e pelo fluxo de autenticação.
+- `src/mocks/investorProfiles.ts` + `src/types/investorProfile.ts` —
+  cadastros administrativos (dados cadastrais, status, observações).
+  Usado pelo CRUD de `/admin/investidores`.
+
+A amarração entre os dois se dá por e-mail (ou por `userId` em
+produção). Na demo, o email do usuário de login coincide com o email
+do cadastro "Marina Azevedo".
+
+**Consequências:**
+- O CRUD administrativo não mexe em login. Criar um cadastro não cria
+  um usuário — em produção, isso será uma operação subsequente
+  (convite por e-mail, por exemplo).
+- Migrar a autenticação (NextAuth/Clerk) não afeta o cadastro
+  administrativo.
+- A UI segue o mesmo padrão do CRUD de posts (formulário + tabela +
+  rotas aninhadas), o que mantém a base consistente.
+
+---
+
+## ADR-014 — `lib/currentInvestor` como ponto único de amarração sessão↔perfil
+
+**Contexto:** ao passar a ter múltiplos investidores com aportes
+distintos, o portal do investidor precisa filtrar estritamente pelos
+aportes do investidor logado. Misturar esse filtro em cada page/route
+handler (via `session.userId` + lookup em users + filtro em aportes)
+repete lógica em pelo menos 4 pontos — risco de esquecer um e vazar
+dados de outro investidor.
+
+**Decisão:** centralizar a resolução em `src/lib/currentInvestor.ts`,
+que expõe:
+- `getCurrentInvestorProfileId(): string | null`
+- `getCurrentInvestorAportes(): Aporte[]`
+
+A amarração física é `MOCK_USERS[i].investorProfileId` → `InvestorProfile.id`.
+O dashboard admin, ao contrário, sempre parte de `MOCK_APORTES` e
+aplica o filtro pelo `?investor=<id>` vindo do `searchParams`.
+
+**Consequências:**
+- UM ponto para trocar ao migrar para auth real (ex.: claim no JWT).
+- Páginas e route handlers do portal do investidor têm 1 linha para
+  obter os aportes — `getCurrentInvestorAportes()`.
+- Admin dashboard nunca passa por esse helper; ele lê `MOCK_APORTES`
+  direto e aplica o filtro pela query string. Os dois fluxos ficam
+  explicitamente diferentes, o que é o comportamento correto.

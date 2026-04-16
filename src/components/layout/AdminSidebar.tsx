@@ -1,6 +1,12 @@
 "use client";
 
-import { FileText, LayoutDashboard, PlusCircle } from "lucide-react";
+import {
+  BarChart3,
+  FileText,
+  LayoutDashboard,
+  PlusCircle,
+  Users
+} from "lucide-react";
 import { AppSidebar } from "./AppSidebar";
 
 export function AdminSidebar({ userName }: { userName: string }) {
@@ -11,6 +17,8 @@ export function AdminSidebar({ userName }: { userName: string }) {
       onLogoutRedirect="/admin/login"
       items={[
         { href: "/admin", label: "Visão geral", icon: LayoutDashboard, match: "exact" },
+        { href: "/admin/dashboard", label: "Resultados", icon: BarChart3 },
+        { href: "/admin/investidores", label: "Investidores", icon: Users },
         { href: "/admin/posts", label: "Posts", icon: FileText },
         { href: "/admin/posts/new", label: "Novo post", icon: PlusCircle, match: "exact" }
       ]}

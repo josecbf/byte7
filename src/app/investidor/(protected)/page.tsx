@@ -1,13 +1,16 @@
-import { Wallet, TrendingUp, BarChart3, Percent } from "lucide-react";
+import { Wallet, TrendingUp, BarChart3, Percent, LineChart } from "lucide-react";
 import {
-  MOCK_APORTES,
+  buildChartEvolution,
+  buildComparative,
   buildDashboardSummary,
-  buildMonthlyEvolution
+  computeByte7ReturnRate
 } from "@/mocks/investor";
+import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
 import { MOCK_USINAS } from "@/mocks/usinas";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/Card";
 import { KpiCard } from "@/components/investor/KpiCard";
 import { EvolutionChart } from "@/components/investor/EvolutionChart";
+import { ComparativeTable } from "@/components/investor/ComparativeTable";
 import { AportesTable } from "@/components/investor/AportesTable";
 import { UsinasMapClient } from "@/components/investor/UsinasMapClient";
 import { UsinaStatusBadge } from "@/components/investor/UsinaBadge";
@@ -17,9 +20,11 @@ import { formatBRL, formatDate, formatPct } from "@/lib/format";
 export const dynamic = "force-dynamic";
 
 export default function InvestorDashboardPage() {
-  const summary = buildDashboardSummary();
-  const evolution = buildMonthlyEvolution();
-  const aportes = MOCK_APORTES;
+  const aportes = getCurrentInvestorAportes();
+  const summary = buildDashboardSummary(aportes);
+  const chartData = buildChartEvolution(aportes);
+  const comparative = buildComparative(aportes);
+  const returnRate = computeByte7ReturnRate(aportes);
   const usinas = MOCK_USINAS;
   const usinasVinculadas = Array.from(
     new Set(aportes.map((a) => a.usinaId))
@@ -44,7 +49,7 @@ export default function InvestorDashboardPage() {
         financeira pode ser realizada. Todos os valores são ilustrativos.
       </Alert>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Total investido"
           value={formatBRL(summary.totalInvested)}
@@ -65,11 +70,17 @@ export default function InvestorDashboardPage() {
           icon={TrendingUp}
         />
         <KpiCard
+          label="Rentabilidade (%)"
+          value={formatPct(returnRate)}
+          hint="Retorno total sobre o investido"
+          icon={LineChart}
+          tone="brand"
+        />
+        <KpiCard
           label="Rendimento contratado"
           value={`${formatPct(summary.monthlyYieldRate)} a.m.`}
           hint="Parâmetro da demo"
           icon={Percent}
-          tone="brand"
         />
       </section>
 
@@ -78,11 +89,11 @@ export default function InvestorDashboardPage() {
           <CardHeader>
             <CardTitle>Evolução mensal</CardTitle>
             <span className="text-xs text-ink-500">
-              Saldo consolidado × total investido
+              Byte7 × CDI × Ibovespa · mesma escala de saldo acumulado
             </span>
           </CardHeader>
           <CardBody>
-            <EvolutionChart data={evolution} />
+            <EvolutionChart data={chartData} />
           </CardBody>
         </Card>
 
@@ -96,6 +107,7 @@ export default function InvestorDashboardPage() {
             <Row label="Total de aportes" value={String(summary.aportesCount)} />
             <Row label="Bruto investido" value={formatBRL(summary.totalInvested)} />
             <Row label="Rendimento acumulado" value={formatBRL(summary.accumulatedYield)} />
+            <Row label="Rentabilidade" value={formatPct(returnRate)} />
             <div className="border-t border-ink-100 pt-3 flex items-center justify-between">
               <span className="text-xs uppercase tracking-wider text-ink-500">
                 Saldo consolidado
@@ -104,6 +116,20 @@ export default function InvestorDashboardPage() {
                 {formatBRL(summary.consolidatedBalance)}
               </span>
             </div>
+          </CardBody>
+        </Card>
+      </section>
+
+      <section>
+        <Card>
+          <CardHeader>
+            <CardTitle>Comparativo mensal</CardTitle>
+            <span className="text-xs text-ink-500">
+              Rendimento (%) mês a mês por referência
+            </span>
+          </CardHeader>
+          <CardBody>
+            <ComparativeTable rows={comparative.rows} totals={comparative.totals} />
           </CardBody>
         </Card>
       </section>

@@ -2,6 +2,33 @@
 
 > Pendências e melhorias conhecidas. Marcar com `[x]` quando concluído.
 
+## Entregue na Sessão 4
+
+- [x] Dashboard admin consolidado (`/admin/dashboard`) com dropdown
+  para consultar investidor específico ou visão consolidada
+- [x] `Aporte.investorId` + seed de 3 aportes adicionais para Fernando
+- [x] Amarração usuário↔perfil via `investorProfileId` em `MOCK_USERS`
+- [x] Helper `lib/currentInvestor` para filtrar portal do investidor
+  pela sessão (páginas + API routes)
+- [x] AUM consolidado na visão geral do admin
+
+## Entregue na Sessão 3
+
+- [x] CRUD administrativo de investidores (listar/criar/editar/excluir)
+  com item "Investidores" no sidebar e 3 cadastros iniciais (2 novos)
+- [x] Banner global "Versão demonstrativa" em todas as páginas
+- [x] Revisão de textos institucionais (Home, Sobre, Valores, Produtos,
+  Footer) com tom mais corporativo
+
+## Entregue na Sessão 2
+
+- [x] KPI "Rentabilidade (%)" no dashboard
+- [x] Curvas CDI e Ibovespa no gráfico de evolução (+ Total investido)
+- [x] Tabela comparativa mensal (Byte7, Poupança, IPCA, CDI, Ibovespa)
+      com linha "Acumulado (%)" via juros compostos
+- [x] Utilitário `finance.ts` (buildSeries/accumulatedReturn/totalReturnRate)
+- [x] Mocks de benchmarks com cores e labels centralizados
+
 ## Entregue na Sessão 1
 
 - [x] Estrutura de pastas e configs base

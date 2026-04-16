@@ -1,48 +1,101 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { PlusCircle, FileText, Eye } from "lucide-react";
+import { PlusCircle, FileText, Eye, Users, BarChart3 } from "lucide-react";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { listPosts } from "@/mocks/posts";
+import { listInvestors } from "@/mocks/investorProfiles";
+import { MOCK_APORTES, buildDashboardSummary } from "@/mocks/investor";
+import { formatBRL } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default function AdminOverviewPage() {
-  const all = listPosts();
-  const published = all.filter((p) => p.status === "published").length;
-  const drafts = all.length - published;
+  const posts = listPosts();
+  const published = posts.filter((p) => p.status === "published").length;
+  const drafts = posts.length - published;
 
-  if (all.length === 0) {
-    redirect("/admin/posts");
-  }
+  const investors = listInvestors();
+  const activeInvestors = investors.filter((i) => i.status === "ativo").length;
+  const pendingInvestors = investors.filter((i) => i.status === "pendente").length;
+
+  const consolidated = buildDashboardSummary(MOCK_APORTES);
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-8 max-w-5xl">
       <div>
         <h1 className="text-2xl font-bold text-ink-900 tracking-tight">
           Visão geral
         </h1>
         <p className="mt-1 text-sm text-ink-500">
-          Gerencie os posts do blog — demo mockada, persistência em memória.
+          Administração de cadastros de investidores e conteúdo do blog.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Total de posts" value={all.length} icon={FileText} />
-        <Stat label="Publicados" value={published} icon={Eye} />
-        <Stat label="Rascunhos" value={drafts} icon={FileText} />
-      </div>
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <h2 className="text-sm uppercase tracking-wider text-ink-500">
+              Investidores
+            </h2>
+            <p className="text-xs text-ink-500">
+              {investors.length} cadastros · {activeInvestors} ativos ·{" "}
+              {pendingInvestors} pendentes
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Link href="/admin/dashboard">
+              <Button size="sm">
+                <BarChart3 className="h-4 w-4" /> Resultados
+              </Button>
+            </Link>
+            <Link href="/admin/investidores">
+              <Button variant="outline" size="sm">
+                Gerenciar
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-4">
+          <Stat label="Total" value={investors.length} icon={Users} />
+          <Stat label="Ativos" value={activeInvestors} icon={Users} />
+          <Stat label="Pendentes" value={pendingInvestors} icon={Users} />
+          <Stat
+            label="AUM consolidado"
+            value={formatBRL(consolidated.consolidatedBalance)}
+            icon={BarChart3}
+          />
+        </div>
+      </section>
 
-      <div className="flex flex-wrap gap-3">
-        <Link href="/admin/posts/new">
-          <Button>
-            <PlusCircle className="h-4 w-4" /> Novo post
-          </Button>
-        </Link>
-        <Link href="/admin/posts">
-          <Button variant="outline">Gerenciar posts</Button>
-        </Link>
-      </div>
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <h2 className="text-sm uppercase tracking-wider text-ink-500">
+              Blog
+            </h2>
+            <p className="text-xs text-ink-500">
+              {posts.length} posts · {published} publicados · {drafts} rascunhos
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Link href="/admin/posts/new">
+              <Button size="sm">
+                <PlusCircle className="h-4 w-4" /> Novo post
+              </Button>
+            </Link>
+            <Link href="/admin/posts">
+              <Button variant="outline" size="sm">
+                Gerenciar
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Stat label="Total de posts" value={posts.length} icon={FileText} />
+          <Stat label="Publicados" value={published} icon={Eye} />
+          <Stat label="Rascunhos" value={drafts} icon={FileText} />
+        </div>
+      </section>
     </div>
   );
 }
@@ -53,7 +106,7 @@ function Stat({
   icon: Icon
 }: {
   label: string;
-  value: number;
+  value: number | string;
   icon: React.ComponentType<{ className?: string }>;
 }) {
   return (

@@ -2,7 +2,7 @@
 
 import {
   Area,
-  AreaChart,
+  ComposedChart,
   CartesianGrid,
   Legend,
   Line,
@@ -11,22 +11,30 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import type { MonthlyEvolutionPoint } from "@/types/investor";
+import type { ChartEvolutionPoint } from "@/types/investor";
 import { formatBRL, formatMonth } from "@/lib/format";
+import { BENCHMARK_COLORS } from "@/mocks/benchmarks";
 
-export function EvolutionChart({ data }: { data: MonthlyEvolutionPoint[] }) {
-  const formatted = data.map((p) => ({
-    ...p,
-    monthLabel: formatMonth(p.month)
-  }));
+const LABELS: Record<string, string> = {
+  byte7: "Byte7",
+  cdi: "CDI",
+  ibovespa: "Ibovespa",
+  invested: "Total investido"
+};
+
+export function EvolutionChart({ data }: { data: ChartEvolutionPoint[] }) {
+  const formatted = data.map((p) => ({ ...p, monthLabel: formatMonth(p.month) }));
   return (
-    <div className="h-72 w-full">
+    <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={formatted} margin={{ top: 10, right: 16, bottom: 0, left: 0 }}>
+        <ComposedChart
+          data={formatted}
+          margin={{ top: 10, right: 16, bottom: 0, left: 0 }}
+        >
           <defs>
-            <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10b981" stopOpacity={0.35} />
-              <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+            <linearGradient id="byte7Gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={BENCHMARK_COLORS.byte7} stopOpacity={0.35} />
+              <stop offset="100%" stopColor={BENCHMARK_COLORS.byte7} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" vertical={false} />
@@ -49,11 +57,7 @@ export function EvolutionChart({ data }: { data: MonthlyEvolutionPoint[] }) {
           <Tooltip
             formatter={(value: number, name: string) => [
               formatBRL(value),
-              name === "balance"
-                ? "Saldo consolidado"
-                : name === "invested"
-                ? "Total investido"
-                : "Rendimento do mês"
+              LABELS[name] ?? name
             ]}
             labelFormatter={(label) => `Mês ${label}`}
             contentStyle={{
@@ -66,29 +70,38 @@ export function EvolutionChart({ data }: { data: MonthlyEvolutionPoint[] }) {
             verticalAlign="top"
             height={28}
             iconSize={10}
-            formatter={(value) =>
-              value === "balance"
-                ? "Saldo consolidado"
-                : value === "invested"
-                ? "Total investido"
-                : value
-            }
+            formatter={(value) => LABELS[value as string] ?? value}
           />
           <Area
             type="monotone"
-            dataKey="balance"
-            stroke="#059669"
+            dataKey="byte7"
+            stroke={BENCHMARK_COLORS.byte7}
             strokeWidth={2}
-            fill="url(#balanceGradient)"
+            fill="url(#byte7Gradient)"
+          />
+          <Line
+            type="monotone"
+            dataKey="cdi"
+            stroke={BENCHMARK_COLORS.cdi}
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="ibovespa"
+            stroke={BENCHMARK_COLORS.ibovespa}
+            strokeWidth={2}
+            dot={false}
           />
           <Line
             type="monotone"
             dataKey="invested"
             stroke="#0f172a"
-            strokeWidth={2}
+            strokeWidth={1.5}
+            strokeDasharray="4 4"
             dot={false}
           />
-        </AreaChart>
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

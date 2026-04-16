@@ -1,5 +1,6 @@
 export interface Aporte {
   id: string;
+  investorId: string; // id do cadastro (InvestorProfile)
   date: string; // ISO
   amount: number; // BRL
   usinaId: string;
@@ -47,4 +48,41 @@ export interface DashboardSummary {
   monthlyYieldRate: number; // 0.06
   aportesCount: number;
   since: string; // ISO — primeiro aporte
+}
+
+/**
+ * Ponto da série consumida pelo gráfico comparativo. Inclui o saldo
+ * acumulado de cada benchmark no mesmo mês, todos partindo do mesmo
+ * fluxo de aportes para permitir comparação direta na mesma escala.
+ */
+export interface ChartEvolutionPoint {
+  month: string;
+  invested: number;
+  byte7: number;
+  cdi: number;
+  ibovespa: number;
+}
+
+/**
+ * Linha da tabela comparativa mensal: taxa do mês (fração) para cada
+ * benchmark considerado.
+ */
+export interface ComparativeMonthRow {
+  month: string;
+  byte7: number;
+  poupanca: number;
+  ipca: number;
+  cdi: number;
+  ibovespa: number;
+}
+
+/**
+ * Rentabilidade acumulada (fração) do período para cada benchmark.
+ */
+export interface ComparativeAccumulated {
+  byte7: number;
+  poupanca: number;
+  ipca: number;
+  cdi: number;
+  ibovespa: number;
 }

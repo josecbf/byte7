@@ -8,33 +8,33 @@ export const metadata: Metadata = { title: "Valores" };
 const VALORES = [
   {
     icon: ShieldCheck,
-    title: "Transparência radical",
-    body: "Se o investidor não consegue conferir, não existe. Toda posição, usina, rendimento e contrato precisa ser consultável a qualquer momento."
+    title: "Transparência operacional",
+    body: "A posição do investidor precisa ser integralmente consultável. Aportes, usinas vinculadas, evolução mensal e contrato são apresentados em tempo real, sem intermediação manual."
   },
   {
     icon: Leaf,
-    title: "Energia limpa que rende de verdade",
-    body: "Acreditamos que o futuro energético do país passa por quem investe nele. Nosso papel é simplificar essa ponte, com ativos reais."
+    title: "Capital aplicado a geração real",
+    body: "A plataforma direciona recursos para ativos de geração solar no Brasil. Transição energética é tese de longo prazo — e exige estrutura operacional sólida para se materializar."
   },
   {
     icon: Target,
-    title: "Foco no que importa",
-    body: "Não criamos complexidade onde não há. Preferimos um produto simples e correto a um produto grande e confuso."
+    title: "Simplicidade estrutural",
+    body: "Rejeitamos complexidade desnecessária. Processos, cláusulas e interfaces são desenhados para serem compreensíveis, auditáveis e replicáveis."
   },
   {
     icon: Users,
-    title: "Relacionamento de longo prazo",
-    body: "Investidor não é lead. É parceiro. Todo ponto de contato é pensado para construir confiança ao longo do tempo."
+    title: "Relacionamento institucional",
+    body: "Cada investidor é tratado como parceiro de longo prazo. Informação clara, resposta tempestiva e compromisso contratual são não-negociáveis."
   },
   {
     icon: Compass,
-    title: "Governança e rigor",
-    body: "Operamos com o cuidado regulatório e contratual que o setor de energia exige, sem transferir atrito para o investidor."
+    title: "Governança e aderência regulatória",
+    body: "Operamos sob os padrões de diligência, compliance e reporte exigidos pelo setor de energia e pelo mercado de capitais brasileiro."
   },
   {
     icon: Heart,
-    title: "Produto como canal",
-    body: "A plataforma é a face mais visível da empresa. Ela é construída com padrão de fintech, não com padrão de portal."
+    title: "Produto como instrumento institucional",
+    body: "A plataforma é a principal materialização da relação com o investidor. É construída com o mesmo padrão técnico de produtos financeiros consolidados."
   }
 ];
 
@@ -43,10 +43,10 @@ export default function ValoresPage() {
     <section className="py-16">
       <Container>
         <p className="text-sm uppercase tracking-wider text-brand-700 font-medium">
-          Nossos valores
+          Missão, visão e valores
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900 max-w-3xl">
-          O que move a Byte7 — e o que o investidor pode nos cobrar.
+          Os compromissos institucionais que orientam a Byte7.
         </h1>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -54,7 +54,7 @@ export default function ValoresPage() {
             <CardBody className="space-y-3 text-white">
               <p className="text-xs uppercase tracking-wider text-brand-100">Missão</p>
               <p className="text-lg font-semibold leading-snug">
-                Tornar a participação em ativos reais de energia simples, transparente e auditável para todo investidor.
+                Estruturar a participação de investidores em ativos reais de geração de energia de forma simples, transparente e auditável.
               </p>
             </CardBody>
           </Card>
@@ -62,7 +62,7 @@ export default function ValoresPage() {
             <CardBody className="space-y-3">
               <p className="text-xs uppercase tracking-wider text-ink-500">Visão</p>
               <p className="text-lg font-semibold text-ink-900 leading-snug">
-                Ser a plataforma de referência em intermediação tokenizada de energia no Brasil até o fim da década.
+                Consolidar-se como plataforma de referência em intermediação tokenizada de energia no mercado brasileiro.
               </p>
             </CardBody>
           </Card>
@@ -70,7 +70,7 @@ export default function ValoresPage() {
             <CardBody className="space-y-3">
               <p className="text-xs uppercase tracking-wider text-ink-500">Compromisso</p>
               <p className="text-lg font-semibold text-ink-900 leading-snug">
-                Tratar cada investidor como parceiro de longo prazo, com acesso integral às informações e rigor contratual em cada passo.
+                Assegurar ao investidor acesso integral às informações de sua posição, com rigor contratual em cada etapa.
               </p>
             </CardBody>
           </Card>

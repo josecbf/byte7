@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, decodeSession, matchesRole } from "@/lib/session";
-import { MOCK_APORTES } from "@/mocks/investor";
+import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
 
 export const runtime = "nodejs";
 
@@ -10,5 +10,5 @@ export async function GET() {
   if (!matchesRole(session, "investor")) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
-  return NextResponse.json(MOCK_APORTES);
+  return NextResponse.json(getCurrentInvestorAportes());
 }

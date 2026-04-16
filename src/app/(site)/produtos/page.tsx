@@ -10,42 +10,42 @@ export const metadata: Metadata = { title: "Produtos e Serviços" };
 
 const PRODUTOS = [
   {
-    name: "Byte7 Solar · Token Investidor",
-    tag: "Principal",
+    name: "Byte7 Solar · Participação Tokenizada",
+    tag: "Produto principal",
     tone: "brand" as const,
     summary:
-      "Participação tokenizada em frações econômicas de usinas solares. O investidor acompanha o ativo real, o rendimento contratado e a posição consolidada pelo portal.",
+      "Estrutura de participação econômica em usinas solares fotovoltaicas por meio de tokenização. O investidor acompanha o ativo vinculado, o rendimento contratado e a posição consolidada via portal.",
     bullets: [
-      "Rendimento contratado de 6% ao mês (parâmetro desta demo)",
-      "Posição consultável 24/7 no portal do investidor",
-      "Visualização do contrato e download com um clique",
-      "Mapa georreferenciado das usinas vinculadas"
+      "Rendimento contratado de 6% ao mês (parâmetro desta versão demonstrativa)",
+      "Posição consultável em tempo real no portal do investidor",
+      "Visualização e emissão de cópia do contrato em um clique",
+      "Mapeamento georreferenciado das usinas vinculadas"
     ]
   },
   {
     name: "Byte7 Gestão de Usinas",
-    tag: "Back-office",
+    tag: "Operações",
     tone: "info" as const,
     summary:
-      "Operação ponta a ponta de usinas solares de pequeno e médio porte — da O&M ao reporte mensal. A infraestrutura que sustenta os produtos de investidor.",
+      "Operação integral de usinas solares de pequeno e médio porte — da operação e manutenção ao reporte mensal. É a infraestrutura operacional que sustenta os produtos voltados ao investidor.",
     bullets: [
-      "Monitoramento em tempo real da geração",
+      "Monitoramento contínuo da geração",
       "Contratos padronizados e auditados",
       "Rotinas de compliance e reporte regulatório",
       "Integração nativa com a plataforma Byte7"
     ]
   },
   {
-    name: "Byte7 API & Insights",
-    tag: "Roadmap",
+    name: "Byte7 API & Integração",
+    tag: "Em roadmap",
     tone: "warning" as const,
     summary:
-      "API pública para parceiros consumirem posições e indicadores. Em roadmap para a próxima fase — fora do escopo desta demo.",
+      "Interface pública para parceiros institucionais consumirem posições, indicadores e eventos da plataforma. Prevista para a próxima fase e fora do escopo desta versão demonstrativa.",
     bullets: [
       "Endpoints REST para portfólio e usinas",
       "Webhooks para eventos relevantes",
-      "Painéis embedáveis via iframe/SDK",
-      "Planejado para pós-demo"
+      "Painéis incorporáveis via iframe/SDK",
+      "Disponibilização programada para o pós-demo"
     ]
   }
 ];
@@ -58,11 +58,13 @@ export default function ProdutosPage() {
           Produtos e serviços
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900 max-w-3xl">
-          Três camadas, um mesmo propósito: energia real, capital acompanhado.
+          Três camadas integradas, um único propósito institucional.
         </h1>
         <p className="mt-3 text-ink-600 max-w-2xl">
-          Conheça os produtos da Byte7. Esta demo foca no portal do investidor,
-          mas as outras camadas já estão mapeadas no nosso roadmap.
+          A Byte7 estrutura sua oferta em três camadas complementares, que
+          cobrem desde a operação da usina até a experiência de consulta do
+          investidor. Esta versão demonstrativa evidencia o portal do
+          investidor, com as demais camadas já mapeadas no roadmap.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -93,10 +95,10 @@ export default function ProdutosPage() {
         <div className="mt-16 rounded-2xl border border-ink-200 bg-white p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
             <h3 className="text-xl font-semibold text-ink-900">
-              Quer ver o produto principal em ação?
+              Avalie o produto principal em ambiente demonstrativo.
             </h3>
             <p className="text-sm text-ink-600">
-              Entre na área do investidor com as credenciais de demonstração.
+              Acesse o portal do investidor com as credenciais de demonstração para explorar a experiência completa.
             </p>
           </div>
           <Link href="/investidor/login">

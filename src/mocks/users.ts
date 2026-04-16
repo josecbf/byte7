@@ -6,6 +6,11 @@ import type { AuthUser, UserRole } from "@/types/auth";
  */
 interface MockUser extends AuthUser {
   password: string;
+  /**
+   * Amarra o usuário de login a um cadastro em `InvestorProfile` (`investorProfileId`).
+   * Só faz sentido para usuários com role=investor.
+   */
+  investorProfileId?: string;
 }
 
 export const MOCK_USERS: MockUser[] = [
@@ -21,7 +26,8 @@ export const MOCK_USERS: MockUser[] = [
     name: "Marina Azevedo",
     email: "investidor@byte7.com.br",
     password: "investidor123",
-    role: "investor"
+    role: "investor",
+    investorProfileId: "inv_001"
   }
 ];
 

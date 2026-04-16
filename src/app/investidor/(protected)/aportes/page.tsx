@@ -1,14 +1,14 @@
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/Card";
 import { KpiCard } from "@/components/investor/KpiCard";
 import { AportesTable } from "@/components/investor/AportesTable";
-import { MOCK_APORTES } from "@/mocks/investor";
+import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
 import { Wallet, Hash } from "lucide-react";
 import { formatBRL, formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default function AportesPage() {
-  const aportes = MOCK_APORTES;
+  const aportes = getCurrentInvestorAportes();
   const total = aportes.reduce((s, a) => s + a.amount, 0);
   const first = [...aportes].sort((a, b) => a.date.localeCompare(b.date))[0];
 

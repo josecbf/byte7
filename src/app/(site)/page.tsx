@@ -19,31 +19,31 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-ink-200 bg-gradient-to-b from-white via-brand-50/40 to-white">
         <Container className="py-20 md:py-28 grid gap-10 md:grid-cols-2 items-center">
           <div className="space-y-6">
-            <Badge tone="brand">Plataforma Byte7 · Demo</Badge>
+            <Badge tone="brand">Plataforma institucional Byte7</Badge>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
-              Tokenização de energia, com a{" "}
-              <span className="text-brand-700">transparência</span> que o investidor precisa.
+              Intermediação tokenizada de{" "}
+              <span className="text-brand-700">ativos de energia</span>, com rigor e transparência.
             </h1>
             <p className="text-lg text-ink-600 max-w-xl">
-              A Byte7 conecta investidores a usinas solares reais por meio de um
-              modelo de tokenização moderno. Esta demo apresenta o site
-              institucional e um portal de consulta para o investidor — sem
-              movimentações financeiras.
+              A Byte7 é uma plataforma de intermediação que estrutura a
+              participação econômica de investidores em usinas de geração
+              solar fotovoltaica no Brasil. Esta versão demonstrativa apresenta
+              a camada institucional e o portal de consulta do investidor.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/investidor/login">
                 <Button size="lg">
-                  Acessar área do investidor <ArrowRight className="h-4 w-4" />
+                  Acessar portal do investidor <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/produtos">
                 <Button variant="outline" size="lg">
-                  Conhecer os produtos
+                  Produtos e serviços
                 </Button>
               </Link>
             </div>
             <p className="text-xs text-ink-500">
-              Versão demonstrativa · dados ilustrativos · nenhuma movimentação real.
+              Ambiente demonstrativo. Valores, usinas e investidores são ilustrativos.
             </p>
           </div>
           <div className="relative">
@@ -54,17 +54,17 @@ export default function HomePage() {
                   <p className="text-xs uppercase tracking-wider text-ink-500">
                     Portal do investidor
                   </p>
-                  <Badge tone="success">Ao vivo nesta demo</Badge>
+                  <Badge tone="success">Demonstrativo</Badge>
                 </div>
                 <div className="mt-5 grid grid-cols-2 gap-4">
                   <Kpi label="Total investido" value="R$ 130.000,00" />
                   <Kpi label="Saldo consolidado" value="R$ 179.482,91" />
-                  <Kpi label="Rendimento" value="6% a.m." brand />
+                  <Kpi label="Rendimento contratado" value="6% a.m." brand />
                   <Kpi label="Usinas vinculadas" value="4 de 5" />
                 </div>
                 <div className="mt-5 rounded-lg border border-dashed border-ink-200 bg-ink-50 p-4 text-xs text-ink-500 leading-relaxed">
-                  Todos os valores acima são fictícios. O portal foi desenhado
-                  para consulta — sem aportes, saques ou qualquer movimentação.
+                  Valores exibidos para fins de demonstração. O portal é destinado
+                  exclusivamente à consulta de posição, sem qualquer movimentação financeira.
                 </div>
               </CardBody>
             </Card>
@@ -76,43 +76,44 @@ export default function HomePage() {
         <Container className="space-y-12">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-ink-900">
-              Uma plataforma, toda a jornada.
+              Infraestrutura institucional ponta a ponta.
             </h2>
             <p className="mt-3 text-ink-600">
-              Da institucional ao dashboard do investidor, a Byte7 entrega o
-              ecossistema completo para quem investe e para quem gere usinas.
+              Da camada institucional à posição consolidada do investidor, a
+              Byte7 oferece um ambiente integrado, auditável e desenhado para
+              decisões informadas.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Feature
               icon={Sun}
-              title="Usinas reais, vinculadas ao investidor"
-              body="Cada token representa uma fração econômica de usinas solares operantes ou em construção no Brasil."
+              title="Vinculação a ativos reais"
+              body="Cada posição representa uma participação econômica em usinas solares em operação ou em construção, com rastreabilidade plena."
             />
             <Feature
               icon={LineChart}
-              title="Evolução mensal transparente"
-              body="Rendimento contratado de 6% a.m. com composição visível mês a mês e gráfico histórico."
+              title="Evolução mensal auditável"
+              body="Rendimento contratado de 6% ao mês, com composição detalhada mês a mês e histórico completo disponível para consulta."
             />
             <Feature
               icon={Map}
-              title="Mapa das usinas"
-              body="Visualize geograficamente onde seu capital está operando — com status e capacidade de cada planta."
+              title="Mapeamento geográfico do portfólio"
+              body="Visualização das usinas vinculadas, com status operacional, capacidade instalada e localização georreferenciada."
             />
             <Feature
               icon={FileText}
               title="Contrato acessível"
-              body="Visualize online e baixe uma cópia do seu contrato a qualquer momento, com um clique."
+              body="Cláusulas, partes envolvidas e condições disponíveis em tela, com emissão imediata de cópia em arquivo."
             />
             <Feature
               icon={BarChart3}
-              title="KPIs consolidados"
-              body="Total investido, saldo consolidado e rendimento acumulado em uma única tela."
+              title="Indicadores consolidados"
+              body="Total investido, saldo consolidado, rentabilidade e comparativos com referências de mercado em uma única visão."
             />
             <Feature
               icon={ShieldCheck}
-              title="Consulta apenas"
-              body="Nesta fase, a plataforma é 100% de consulta. Nenhuma movimentação financeira é executada."
+              title="Ambiente exclusivamente de consulta"
+              body="Nesta fase, a plataforma opera apenas em modo de consulta, sem qualquer execução de movimentação financeira."
             />
           </div>
         </Container>
@@ -122,21 +123,21 @@ export default function HomePage() {
         <Container className="grid gap-8 md:grid-cols-[1fr_auto] items-center">
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight">
-              Pronto para explorar a demo?
+              Conheça o ambiente demonstrativo.
             </h2>
             <p className="text-ink-200 max-w-2xl">
-              Entre com as credenciais de demonstração para navegar pelo portal
-              do investidor — ou acesse o admin do blog para testar o CRUD de
-              conteúdo.
+              Acesse o portal do investidor com as credenciais demonstrativas
+              ou o ambiente administrativo para avaliar os fluxos de gestão de
+              cadastros e conteúdo institucional.
             </p>
           </div>
           <div className="flex gap-3">
             <Link href="/investidor/login">
-              <Button size="lg">Área do investidor</Button>
+              <Button size="lg">Portal do investidor</Button>
             </Link>
             <Link href="/admin/login">
               <Button size="lg" variant="outline" className="bg-white/5 text-white border-white/20 hover:bg-white/10">
-                Admin do blog
+                Ambiente administrativo
               </Button>
             </Link>
           </div>

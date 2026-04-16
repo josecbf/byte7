@@ -12,13 +12,14 @@ export default function SobrePage() {
           Sobre nós
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900">
-          Conectamos capital a geração de energia real.
+          Intermediação institucional entre capital e geração de energia.
         </h1>
         <p className="mt-4 text-lg text-ink-600">
-          A Byte7 nasceu do encontro entre engenharia de energia e engenharia
-          de software. Nosso objetivo é simplificar a participação de
-          investidores em ativos reais de geração solar no Brasil por meio de
-          um modelo de tokenização transparente e auditável.
+          A Byte7 atua como plataforma de intermediação tokenizada de ativos
+          de energia solar fotovoltaica no Brasil. Nossa operação combina
+          engenharia de ativos reais, estruturação contratual e tecnologia
+          proprietária para oferecer ao investidor um ambiente íntegro,
+          transparente e auditável.
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -26,7 +27,7 @@ export default function SobrePage() {
             <CardBody>
               <p className="text-3xl font-bold text-brand-700">+20 MWp</p>
               <p className="mt-2 text-sm text-ink-600">
-                Capacidade combinada no portfólio atual (operando + construção).
+                Capacidade combinada instalada e em construção no portfólio atual.
               </p>
             </CardBody>
           </Card>
@@ -34,7 +35,7 @@ export default function SobrePage() {
             <CardBody>
               <p className="text-3xl font-bold text-brand-700">5 usinas</p>
               <p className="mt-2 text-sm text-ink-600">
-                Entre operantes, em construção e planejadas — todas no Nordeste e Centro-Oeste.
+                Distribuídas entre Nordeste e Centro-Oeste, entre operação, construção e planejamento.
               </p>
             </CardBody>
           </Card>
@@ -42,34 +43,36 @@ export default function SobrePage() {
             <CardBody>
               <p className="text-3xl font-bold text-brand-700">100%</p>
               <p className="mt-2 text-sm text-ink-600">
-                Das posições do investidor consultáveis em tempo real no portal.
+                Da posição de cada investidor disponível para consulta em tempo real no portal.
               </p>
             </CardBody>
           </Card>
         </div>
 
         <div className="mt-16 prose-byte7">
-          <h2>Nossa história</h2>
+          <h2>Trajetória</h2>
           <p>
-            Em uma indústria tradicionalmente burocrática, a Byte7 foi fundada
-            com a convicção de que o investidor merece clareza. Começamos
-            operando usinas solares em Petrolina e Juazeiro, e rapidamente
-            percebemos que o gargalo não era técnico — era de informação.
+            A Byte7 nasceu da convergência entre expertise operacional em
+            geração solar e capacidade de engenharia de software. A partir de
+            operações próprias em Petrolina e Juazeiro, estruturamos a camada
+            de intermediação que hoje permite a participação tokenizada de
+            investidores em ativos reais de energia.
           </p>
           <p>
-            A partir disso, desenvolvemos a camada de intermediação
-            tokenizada que torna a participação do investidor simples de
-            acompanhar, sem abrir mão do rigor contratual e regulatório que
-            a operação exige.
+            Desde a concepção, o desenho da plataforma priorizou três
+            requisitos institucionais: aderência regulatória, rastreabilidade
+            contratual integral e uma experiência de consulta compatível com
+            os padrões mais exigentes do mercado financeiro.
           </p>
 
-          <h2>Como pensamos</h2>
+          <h2>Posicionamento</h2>
           <p>
-            Combinamos três princípios simples: <strong>ativos reais</strong>,
-            <strong> transparência radical</strong> e <strong>produto bem
-            feito</strong>. A demo que você está navegando já reflete essa
-            mentalidade — mesmo em fase de protótipo, tratamos o produto como
-            parte do relacionamento.
+            Atuamos sob três princípios claros: <strong>ativos reais</strong>,{" "}
+            <strong>transparência operacional</strong> e{" "}
+            <strong>rigor na execução</strong>. A presente versão
+            demonstrativa já reflete esses princípios — mesmo em ambiente de
+            avaliação, tratamos o produto como parte indissociável do
+            relacionamento institucional com o investidor.
           </p>
         </div>
       </Container>

@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, decodeSession, matchesRole } from "@/lib/session";
 import {
-  MOCK_APORTES,
   buildDashboardSummary,
   buildMonthlyEvolution
 } from "@/mocks/investor";
 import { MOCK_USINAS } from "@/mocks/usinas";
+import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
 
 export const runtime = "nodejs";
 
@@ -15,10 +15,11 @@ export async function GET() {
   if (!matchesRole(session, "investor")) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
+  const aportes = getCurrentInvestorAportes();
   return NextResponse.json({
-    summary: buildDashboardSummary(),
-    aportes: MOCK_APORTES,
-    evolution: buildMonthlyEvolution(),
+    summary: buildDashboardSummary(aportes),
+    aportes,
+    evolution: buildMonthlyEvolution(aportes),
     usinas: MOCK_USINAS
   });
 }
