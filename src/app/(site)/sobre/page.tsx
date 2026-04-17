@@ -12,14 +12,14 @@ export default function SobrePage() {
           Sobre nós
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900">
-          Intermediação institucional entre capital e geração de energia.
+          Onde propósito, tecnologia e fé caminham juntos.
         </h1>
         <p className="mt-4 text-lg text-ink-600">
-          A Byte7 atua como plataforma de intermediação tokenizada de ativos
-          de energia solar fotovoltaica no Brasil. Nossa operação combina
-          engenharia de ativos reais, estruturação contratual e tecnologia
-          proprietária para oferecer ao investidor um ambiente íntegro,
-          transparente e auditável.
+          Desde 2022, a COOPERGAC nasceu com um propósito maior: unir pessoas,
+          propósitos e tecnologias sustentáveis sob a direção de um chamado que
+          transcende o mercado. Atuamos como cooperativa de geração distribuída
+          de energia solar, eletromobilidade e sustentabilidade — um organismo
+          vivo de fé, inovação e responsabilidade socioambiental.
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -43,26 +43,27 @@ export default function SobrePage() {
             <CardBody>
               <p className="text-3xl font-bold text-brand-700">100%</p>
               <p className="mt-2 text-sm text-ink-600">
-                Da posição de cada investidor disponível para consulta em tempo real no portal.
+                Da posição de cada cooperado disponível para consulta em tempo real no portal.
               </p>
             </CardBody>
           </Card>
         </div>
 
-        <div className="mt-16 prose-byte7">
+        <div className="mt-16 prose-coopergac">
           <h2>Trajetória</h2>
           <p>
-            A Byte7 nasceu da convergência entre expertise operacional em
-            geração solar e capacidade de engenharia de software. A partir de
-            operações próprias em Petrolina e Juazeiro, estruturamos a camada
-            de intermediação que hoje permite a participação tokenizada de
-            investidores em ativos reais de energia.
+            Inspirada pelo princípio bíblico de que &quot;todas as coisas
+            cooperam para o bem daqueles que amam a Deus&quot;, a COOPERGAC é
+            formada pelas iniciais de seus sócios fundadores: profissionais
+            comprometidos com o avanço da energia solar, da eletromobilidade
+            e da sustentabilidade.
           </p>
           <p>
-            Desde a concepção, o desenho da plataforma priorizou três
-            requisitos institucionais: aderência regulatória, rastreabilidade
-            contratual integral e uma experiência de consulta compatível com
-            os padrões mais exigentes do mercado financeiro.
+            Cada projeto, cada usina, cada economia gerada aos clientes é fruto
+            da cooperação, da visão compartilhada e do trabalho alinhado com
+            valores eternos. Atuamos para levar energia limpa, acessível e
+            compartilhada, promovendo liberdade energética e construindo um
+            legado sustentável para as próximas gerações.
           </p>
 
           <h2>Posicionamento</h2>
@@ -72,7 +73,7 @@ export default function SobrePage() {
             <strong>rigor na execução</strong>. A presente versão
             demonstrativa já reflete esses princípios — mesmo em ambiente de
             avaliação, tratamos o produto como parte indissociável do
-            relacionamento institucional com o investidor.
+            relacionamento institucional com o cooperado.
           </p>
         </div>
       </Container>

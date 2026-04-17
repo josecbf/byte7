@@ -16,15 +16,15 @@ interface MockUser extends AuthUser {
 export const MOCK_USERS: MockUser[] = [
   {
     id: "usr_admin_1",
-    name: "Admin Byte7",
-    email: "admin@byte7.com.br",
+    name: "Admin COOPERGAC",
+    email: "admin@coopergac.com.br",
     password: "admin123",
     role: "admin"
   },
   {
     id: "usr_inv_1",
     name: "Marina Azevedo",
-    email: "investidor@byte7.com.br",
+    email: "investidor@coopergac.com.br",
     password: "investidor123",
     role: "investor",
     investorProfileId: "inv_001"

@@ -4,7 +4,7 @@ import {
   buildChartEvolution,
   buildComparative,
   buildDashboardSummary,
-  computeByte7ReturnRate
+  computeCoopergacReturnRate
 } from "@/mocks/investor";
 import { listInvestors } from "@/mocks/investorProfiles";
 import { MOCK_USINAS } from "@/mocks/usinas";
@@ -39,7 +39,7 @@ export default function AdminDashboardPage({
     : MOCK_APORTES.filter((a) => a.investorId === selectedId);
 
   const summary = buildDashboardSummary(aportes);
-  const returnRate = computeByte7ReturnRate(aportes);
+  const returnRate = computeCoopergacReturnRate(aportes);
   const chartData = buildChartEvolution(aportes);
   const comparative = buildComparative(aportes);
 
@@ -154,7 +154,7 @@ export default function AdminDashboardPage({
               <CardHeader>
                 <CardTitle>Evolução mensal</CardTitle>
                 <span className="text-xs text-ink-500">
-                  Byte7 × CDI × Ibovespa · mesma escala de saldo acumulado
+                  COOPERGAC × CDI × Ibovespa · mesma escala de saldo acumulado
                 </span>
               </CardHeader>
               <CardBody>

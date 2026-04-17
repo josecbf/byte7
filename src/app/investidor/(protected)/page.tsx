@@ -3,7 +3,7 @@ import {
   buildChartEvolution,
   buildComparative,
   buildDashboardSummary,
-  computeByte7ReturnRate
+  computeCoopergacReturnRate
 } from "@/mocks/investor";
 import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
 import { MOCK_USINAS } from "@/mocks/usinas";
@@ -24,7 +24,7 @@ export default function InvestorDashboardPage() {
   const summary = buildDashboardSummary(aportes);
   const chartData = buildChartEvolution(aportes);
   const comparative = buildComparative(aportes);
-  const returnRate = computeByte7ReturnRate(aportes);
+  const returnRate = computeCoopergacReturnRate(aportes);
   const usinas = MOCK_USINAS;
   const usinasVinculadas = Array.from(
     new Set(aportes.map((a) => a.usinaId))
@@ -38,7 +38,7 @@ export default function InvestorDashboardPage() {
             Seu dashboard
           </h1>
           <p className="mt-1 text-sm text-ink-500">
-            Consulta consolidada da sua posição. Investidor desde{" "}
+            Consulta consolidada da sua posição. Cooperado desde{" "}
             {formatDate(summary.since)}.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function InvestorDashboardPage() {
           <CardHeader>
             <CardTitle>Evolução mensal</CardTitle>
             <span className="text-xs text-ink-500">
-              Byte7 × CDI × Ibovespa · mesma escala de saldo acumulado
+              COOPERGAC × CDI × Ibovespa · mesma escala de saldo acumulado
             </span>
           </CardHeader>
           <CardBody>

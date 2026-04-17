@@ -10,37 +10,37 @@ export const metadata: Metadata = { title: "Produtos e Serviços" };
 
 const PRODUTOS = [
   {
-    name: "Byte7 Solar · Participação Tokenizada",
+    name: "COOPERGAC Solar · Usina de Investimento",
     tag: "Produto principal",
     tone: "brand" as const,
     summary:
-      "Estrutura de participação econômica em usinas solares fotovoltaicas por meio de tokenização. O investidor acompanha o ativo vinculado, o rendimento contratado e a posição consolidada via portal.",
+      "Adquira um sistema fotovoltaico e veja o retorno do seu investimento todos os meses durante 30 anos. Renda passiva garantida com base em contrato sólido de locação dos equipamentos. Painéis, inversores e estrutura instalados em local visível e monitorado.",
     bullets: [
       "Rendimento contratado de 6% ao mês (parâmetro desta versão demonstrativa)",
-      "Posição consultável em tempo real no portal do investidor",
+      "Posição consultável em tempo real no portal do cooperado",
       "Visualização e emissão de cópia do contrato em um clique",
       "Mapeamento georreferenciado das usinas vinculadas"
     ]
   },
   {
-    name: "Byte7 Gestão de Usinas",
+    name: "COOPERGAC Energia · Geração Distribuída",
     tag: "Operações",
     tone: "info" as const,
     summary:
-      "Operação integral de usinas solares de pequeno e médio porte — da operação e manutenção ao reporte mensal. É a infraestrutura operacional que sustenta os produtos voltados ao investidor.",
+      "Sua conta de energia com até 95% de economia. Operação integral de usinas solares de pequeno e médio porte — da operação e manutenção ao reporte mensal. Energia limpa, com payback médio de 3 a 4 anos e vida útil de 25 anos.",
     bullets: [
       "Monitoramento contínuo da geração",
       "Contratos padronizados e auditados",
-      "Rotinas de compliance e reporte regulatório",
-      "Integração nativa com a plataforma Byte7"
+      "Amparo na Lei 14.300 (Marco Legal da Geração Distribuída)",
+      "Sistema conectado à rede com compensação de créditos de energia"
     ]
   },
   {
-    name: "Byte7 API & Integração",
+    name: "COOPERGAC Mobilidade · Carregadores Elétricos",
     tag: "Em roadmap",
     tone: "warning" as const,
     summary:
-      "Interface pública para parceiros institucionais consumirem posições, indicadores e eventos da plataforma. Prevista para a próxima fase e fora do escopo desta versão demonstrativa.",
+      "Energia por assinatura, mercado livre e infraestrutura de carregadores elétricos. Interface pública para parceiros institucionais consumirem posições, indicadores e eventos da plataforma. Prevista para a próxima fase e fora do escopo desta versão demonstrativa.",
     bullets: [
       "Endpoints REST para portfólio e usinas",
       "Webhooks para eventos relevantes",
@@ -58,13 +58,13 @@ export default function ProdutosPage() {
           Produtos e serviços
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900 max-w-3xl">
-          Três camadas integradas, um único propósito institucional.
+          Nosso ecossistema: três camadas integradas, um único propósito.
         </h1>
         <p className="mt-3 text-ink-600 max-w-2xl">
-          A Byte7 estrutura sua oferta em três camadas complementares, que
-          cobrem desde a operação da usina até a experiência de consulta do
-          investidor. Esta versão demonstrativa evidencia o portal do
-          investidor, com as demais camadas já mapeadas no roadmap.
+          A COOPERGAC estrutura sua oferta em camadas complementares — usina de
+          redução da conta de energia, usina de investimento, energia do mercado
+          livre, energia por assinatura e carregadores elétricos. Esta versão
+          demonstrativa evidencia o portal do cooperado.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">

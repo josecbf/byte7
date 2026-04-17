@@ -3,7 +3,7 @@ import type { Aporte, MonthlyEvolutionPoint } from "@/types/investor";
 /**
  * Função que devolve a taxa mensal (fração — ex.: 0.06 = 6%) para um
  * determinado índice de mês da série. Permite que o mesmo algoritmo
- * de evolução seja reaproveitado por Byte7, CDI, Ibovespa etc.
+ * de evolução seja reaproveitado por COOPERGAC, CDI, Ibovespa etc.
  */
 export type RateFn = (monthIndex: number) => number;
 

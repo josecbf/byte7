@@ -9,7 +9,7 @@ const VALORES = [
   {
     icon: ShieldCheck,
     title: "Transparência operacional",
-    body: "A posição do investidor precisa ser integralmente consultável. Aportes, usinas vinculadas, evolução mensal e contrato são apresentados em tempo real, sem intermediação manual."
+    body: "A posição do cooperado precisa ser integralmente consultável. Aportes, usinas vinculadas, evolução mensal e contrato são apresentados em tempo real, sem intermediação manual."
   },
   {
     icon: Leaf,
@@ -23,18 +23,18 @@ const VALORES = [
   },
   {
     icon: Users,
-    title: "Relacionamento institucional",
-    body: "Cada investidor é tratado como parceiro de longo prazo. Informação clara, resposta tempestiva e compromisso contratual são não-negociáveis."
+    title: "Cooperação como cultura",
+    body: "Cada cooperado é tratado como parceiro de longo prazo. Informação clara, resposta tempestiva e compromisso contratual são não-negociáveis."
   },
   {
     icon: Compass,
     title: "Governança e aderência regulatória",
-    body: "Operamos sob os padrões de diligência, compliance e reporte exigidos pelo setor de energia e pelo mercado de capitais brasileiro."
+    body: "Operamos sob os padrões de diligência, compliance e reporte exigidos pelo setor de energia, no amparo da Lei 14.300 (Marco Legal da Geração Distribuída)."
   },
   {
     icon: Heart,
-    title: "Produto como instrumento institucional",
-    body: "A plataforma é a principal materialização da relação com o investidor. É construída com o mesmo padrão técnico de produtos financeiros consolidados."
+    title: "Fé que move, futuro que transforma",
+    body: "A plataforma é a principal materialização da relação com o cooperado. É construída com o mesmo padrão técnico de produtos financeiros consolidados, alinhada com valores eternos."
   }
 ];
 
@@ -46,15 +46,16 @@ export default function ValoresPage() {
           Missão, visão e valores
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900 max-w-3xl">
-          Os compromissos institucionais que orientam a Byte7.
+          Os compromissos institucionais que orientam a COOPERGAC.
         </h1>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="bg-brand-600 border-brand-700">
+          <Card className="bg-brand-700 border-brand-800">
             <CardBody className="space-y-3 text-white">
-              <p className="text-xs uppercase tracking-wider text-brand-100">Missão</p>
+              <p className="text-xs uppercase tracking-wider text-accent-200">Missão</p>
               <p className="text-lg font-semibold leading-snug">
-                Estruturar a participação de investidores em ativos reais de geração de energia de forma simples, transparente e auditável.
+                Levar energia limpa, acessível e compartilhada, promovendo
+                liberdade energética por meio da cooperação e da fé.
               </p>
             </CardBody>
           </Card>
@@ -62,7 +63,9 @@ export default function ValoresPage() {
             <CardBody className="space-y-3">
               <p className="text-xs uppercase tracking-wider text-ink-500">Visão</p>
               <p className="text-lg font-semibold text-ink-900 leading-snug">
-                Consolidar-se como plataforma de referência em intermediação tokenizada de energia no mercado brasileiro.
+                Construir um legado sustentável de geração distribuída,
+                eletromobilidade e responsabilidade socioambiental para as
+                próximas gerações.
               </p>
             </CardBody>
           </Card>
@@ -70,7 +73,8 @@ export default function ValoresPage() {
             <CardBody className="space-y-3">
               <p className="text-xs uppercase tracking-wider text-ink-500">Compromisso</p>
               <p className="text-lg font-semibold text-ink-900 leading-snug">
-                Assegurar ao investidor acesso integral às informações de sua posição, com rigor contratual em cada etapa.
+                Assegurar ao cooperado acesso integral às informações de sua
+                posição, com rigor contratual em cada etapa.
               </p>
             </CardBody>
           </Card>
@@ -81,7 +85,7 @@ export default function ValoresPage() {
           {VALORES.map(({ icon: Icon, title, body }) => (
             <Card key={title}>
               <CardBody className="space-y-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent-100 text-brand-700">
                   <Icon className="h-5 w-5" />
                 </span>
                 <h3 className="text-lg font-semibold text-ink-900">{title}</h3>

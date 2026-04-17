@@ -20,13 +20,14 @@ export async function GET() {
   const c = MOCK_CONTRACT;
   const lines = [
     "===================================================",
-    "  BYTE7 — CONTRATO DE PARTICIPAÇÃO (DEMO MOCKADA)",
+    "  COOPERGAC — CONTRATO DE PARTICIPAÇÃO (DEMO MOCKADA)",
+    "  Energia que une, fé que move, futuro que transforma.",
     "===================================================",
     "",
     `Nº do contrato:  ${c.number}`,
     `Assinado em:     ${formatDate(c.signedAt)}`,
     `Rendimento:      ${formatPct(c.monthlyYieldRate)} ao mês`,
-    `Investidor:      ${c.parties.investor}`,
+    `Cooperado:       ${c.parties.investor}`,
     `Emissor:         ${c.parties.issuer}`,
     "",
     "RESUMO",
@@ -52,7 +53,7 @@ export async function GET() {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Content-Disposition": `attachment; filename="contrato-byte7-${c.number}.txt"`
+      "Content-Disposition": `attachment; filename="contrato-coopergac-${c.number}.txt"`
     }
   });
 }

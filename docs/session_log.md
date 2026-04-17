@@ -19,7 +19,7 @@
 - Docs: `project_context.md`, `session_log.md`, `decisions.md`, `todo.md`.
 - Tipos, mocks e services para: auth, blog, investor.
 - API routes mockadas: `/api/auth/*`, `/api/posts/*`, `/api/investor/*`.
-- Middleware de auth (cookie `byte7_session`) protegendo `/admin` e
+- Middleware de auth (cookie `coopergac_session`) protegendo `/admin` e
   `/investidor`.
 - Componentes UI base (Button, Card, Input, Textarea, Badge, Container).
 - Layouts: Navbar pública, Footer, AdminSidebar, InvestorSidebar.
@@ -65,11 +65,11 @@ performance e mais indicadores, **sem quebrar** a estrutura existente.
   Expondo também `BENCHMARK_LABELS` e `BENCHMARK_COLORS`.
 - `src/mocks/investor.ts` refatorado para delegar ao `buildSeries`
   (sem alterar a API pública `buildMonthlyEvolution`) e ganhou
-  `buildChartEvolution`, `buildComparative` e `computeByte7ReturnRate`.
+  `buildChartEvolution`, `buildComparative` e `computeCOOPERGACReturnRate`.
 - Novos types `ChartEvolutionPoint`, `ComparativeMonthRow`,
   `ComparativeAccumulated` em `src/types/investor.ts`.
 - `EvolutionChart` agora aceita o novo shape e plota 4 séries:
-  Byte7 (área), CDI e Ibovespa (linhas), Total investido (linha
+  COOPERGAC (área), CDI e Ibovespa (linhas), Total investido (linha
   tracejada de referência). Cores vindas de `BENCHMARK_COLORS`.
 - Novo componente `ComparativeTable` (server, apresentacional puro)
   com rendimento mensal por referência e linha final "Acumulado (%)".
@@ -157,7 +157,7 @@ quebrar o portal do investidor existente.
     (nome, status, contato, nota interna);
   - KPIs (Investidores com posição, Total investido, Saldo,
     Rendimento acumulado, Rentabilidade);
-  - gráfico de evolução (Byte7 × CDI × Ibovespa);
+  - gráfico de evolução (COOPERGAC × CDI × Ibovespa);
   - tabela comparativa mensal;
   - tabela de aportes e lista de usinas vinculadas;
   - empty state quando o investidor não tem aportes.

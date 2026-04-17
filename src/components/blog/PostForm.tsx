@@ -48,7 +48,7 @@ export function PostForm({
       title: defaultValues?.title ?? "",
       excerpt: defaultValues?.excerpt ?? "",
       content: defaultValues?.content ?? "",
-      author: defaultValues?.author ?? "Equipe Byte7",
+      author: defaultValues?.author ?? "Equipe COOPERGAC",
       coverImage: defaultValues?.coverImage ?? "",
       tagsInput: defaultValues?.tags?.join(", ") ?? "",
       status: (defaultValues?.status as "draft" | "published") ?? "draft"
@@ -132,7 +132,7 @@ export function PostForm({
         <Field
           label="Tags"
           htmlFor="tagsInput"
-          hint="Separe por vírgula. Ex.: energia, tokenização"
+          hint="Separe por vírgula. Ex.: energia, sustentabilidade"
         >
           <Input id="tagsInput" {...register("tagsInput")} />
         </Field>

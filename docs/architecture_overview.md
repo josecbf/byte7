@@ -1,4 +1,4 @@
-# Arquitetura Byte7 — visão simples + fases
+# Arquitetura COOPERGAC — visão simples + fases
 
 > Documento voltado para **público não-técnico** (parceiros, sócios,
 > investidores, clientes de apresentação). Descreve em linguagem
@@ -9,7 +9,7 @@
 
 ## 1. A plataforma em uma página
 
-Pense na Byte7 como um **prédio de atendimento**. Cada andar tem uma
+Pense na COOPERGAC como um **prédio de atendimento**. Cada andar tem uma
 função clara, e eles conversam entre si com regras bem definidas.
 
 ```
@@ -92,7 +92,7 @@ Cada fase tem: **quando aplicar**, **time necessário**, **infraestrutura**,
 
 **Leitura rápida:**
 - O salto mais importante é **Fase 0 → 1**: não é de capacidade, é de
-  *postura*. É quando a Byte7 passa a guardar dados reais de pessoas
+  *postura*. É quando a COOPERGAC passa a guardar dados reais de pessoas
   reais e, por isso, assume obrigações reais (LGPD, auditoria, backup).
 - Fases 2 e 3 são de **ajuste fino e maturação**: mesma estrutura,
   mais robustez e mais gente cuidando.
@@ -108,8 +108,8 @@ Cada fase tem: **quando aplicar**, **time necessário**, **infraestrutura**,
 - Gestão administrativa de cadastros de investidores
 - Portal do investidor (apenas consulta):
   - Posição consolidada e rentabilidade
-  - Gráfico comparativo (Byte7 × CDI × Ibovespa)
-  - Tabela comparativa mensal (Byte7, Poupança, IPCA, CDI, Ibovespa)
+  - Gráfico comparativo (COOPERGAC × CDI × Ibovespa)
+  - Tabela comparativa mensal (COOPERGAC, Poupança, IPCA, CDI, Ibovespa)
   - Mapa das usinas vinculadas
   - Contrato com emissão de cópia
 - Dashboard administrativo de resultados, com filtro por investidor

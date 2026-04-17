@@ -7,7 +7,7 @@ import { listPosts } from "@/mocks/posts";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Conteúdos sobre tokenização de energia, estratégia e tecnologia — Byte7."
+    "Conteúdos sobre energia solar, sustentabilidade e cooperação — COOPERGAC."
 };
 
 // Em demo, consumimos direto do módulo de mocks (mesmo runtime do servidor).
@@ -24,10 +24,10 @@ export default async function BlogPage() {
           Blog
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink-900 max-w-2xl">
-          Ideias, bastidores e análises sobre tokenização de energia.
+          Ideias, bastidores e análises sobre energia solar.
         </h1>
         <p className="mt-3 text-ink-600 max-w-2xl">
-          Publicações curtas, diretas e feitas pela equipe da Byte7.
+          Publicações curtas, diretas e feitas pela equipe da COOPERGAC.
         </p>
 
         {posts.length === 0 ? (

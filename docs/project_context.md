@@ -1,4 +1,4 @@
-# Byte7 Demo — Contexto do Projeto
+# COOPERGAC Demo — Contexto do Projeto
 
 > Este arquivo é a **memória operacional** do projeto. Se uma nova sessão
 > começar do zero, a leitura deste documento (+ `session_log.md`,
@@ -7,8 +7,11 @@
 
 ## 1. O que é o projeto
 
-**Byte7 Demo** é uma aplicação web demonstrativa da Byte7, empresa que
-atua com **intermediação de tokenização de energia**.
+**COOPERGAC Demo** é uma aplicação web demonstrativa da COOPERGAC Solar
+Energy, **cooperativa de geração distribuída de energia solar,
+eletromobilidade e sustentabilidade** (fundada em 2022).
+
+> Energia que une, fé que move, futuro que transforma.
 
 A demo combina:
 
@@ -25,8 +28,9 @@ A demo combina:
   leitura** — consulta de informações.
 - Rendimento exibido é fixo em **6% ao mês** (parâmetro da demo, não
   promessa financeira).
-- Identidade visual oficial **ainda não existe**; a demo usa um visual
-  provisório limpo e profissional (paleta verde/slate).
+- Identidade visual oficial **COOPERGAC Solar Energy**: paleta verde
+  profundo (folhagem) + amarelo dourado (sol), logo de sol estilizado +
+  wordmark.
 - A arquitetura deve permitir **trocar os mocks por uma API real com
   retrabalho mínimo**.
 
@@ -70,7 +74,7 @@ Nenhuma página/componente precisa mudar.
 
 ## 5. Autenticação (mock)
 
-Auth é mockada com um cookie `byte7_session` contendo JSON base64
+Auth é mockada com um cookie `coopergac_session` contendo JSON base64
 (`{ userId, role, name }`). Um **middleware** protege:
 
 - `/admin/**` → exige `role === "admin"`

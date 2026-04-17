@@ -36,7 +36,7 @@ export function InvestorLoginForm() {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "investidor@byte7.com.br",
+      email: "investidor@coopergac.com.br",
       password: "investidor123"
     }
   });
@@ -97,7 +97,7 @@ export function InvestorLoginForm() {
 
             <div className="rounded-md bg-brand-50 border border-brand-100 p-3 text-xs text-ink-700 space-y-1">
               <p className="font-medium text-brand-800">Credenciais da demo</p>
-              <p><code>investidor@byte7.com.br</code> · <code>investidor123</code></p>
+              <p><code>investidor@coopergac.com.br</code> · <code>investidor123</code></p>
             </div>
 
             <p className="text-center text-xs text-ink-500">

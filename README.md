@@ -1,26 +1,37 @@
-# Byte7 Demo
+# COOPERGAC Solar Energy — Demo
 
-> Demo mockada da plataforma **Byte7** — site institucional + portal do
-> investidor para uma empresa de intermediação de tokenização de energia.
+> Demo mockada da plataforma **COOPERGAC** — site institucional + portal do
+> investidor para uma cooperativa de geração distribuída de energia solar.
 >
 > **Versão**: Demo · **Estado**: funcional, apenas para consulta · **Dados**: mockados localmente.
+>
+> _Energia que une, fé que move, futuro que transforma._
 
 ## Sobre esta versão
 
-Esta é a versão **Demo** da Byte7. O objetivo é demonstrar a experiência
+Esta é a versão **Demo** da COOPERGAC. O objetivo é demonstrar a experiência
 do produto de ponta a ponta — site institucional, blog com área
 administrativa e portal do investidor — sem backend financeiro real.
 
 ⚠️ **Importante**
 
-- Todos os dados (investidor, aportes, usinas, contrato, posts) são
+- Todos os dados (cooperado, aportes, usinas, contrato, posts) são
   **mockados** localmente.
 - A área do investidor é **apenas de consulta**. Não há depósitos,
   saques, transferências ou qualquer movimentação financeira.
 - O rendimento exibido de **6% ao mês** é um parâmetro desta demo, não
   uma promessa financeira.
-- A identidade visual é **provisória**. A identidade oficial será
-  aplicada em versão futura.
+- A identidade visual é a oficial da **COOPERGAC Solar Energy**: verde
+  profundo da folhagem + amarelo dourado do sol.
+
+## Identidade visual
+
+A paleta segue a apresentação institucional da COOPERGAC:
+
+- **Verde profundo (`brand`)** — folhagem viva, confiança e enraizamento.
+- **Amarelo dourado (`accent`)** — o sol que move o nosso ecossistema.
+- Logo: sol estilizado de oito raios + wordmark `COOPERGAC` com a
+  assinatura `Solar Energy`.
 
 ## Stack
 
@@ -62,10 +73,10 @@ Acesse <http://localhost:3000>.
 
 ## Credenciais de demonstração
 
-| Perfil      | E-mail                     | Senha            |
-| ----------- | -------------------------- | ---------------- |
-| Investidor  | `investidor@byte7.com.br`  | `investidor123`  |
-| Admin blog  | `admin@byte7.com.br`       | `admin123`       |
+| Perfil      | E-mail                          | Senha            |
+| ----------- | ------------------------------- | ---------------- |
+| Investidor  | `investidor@coopergac.com.br`   | `investidor123`  |
+| Admin blog  | `admin@coopergac.com.br`        | `admin123`       |
 
 Os formulários de login vêm pré-preenchidos com as credenciais da demo.
 
@@ -76,7 +87,7 @@ Os formulários de login vêm pré-preenchidos com as credenciais da demo.
 - `/` — Home (hero, features, CTA)
 - `/sobre` — Sobre nós
 - `/valores` — Missão, visão, compromisso e princípios
-- `/produtos` — Produtos e serviços
+- `/produtos` — Produtos e serviços (ecossistema COOPERGAC)
 - `/blog` — Lista de posts publicados
 - `/blog/[slug]` — Post individual
 
@@ -105,7 +116,7 @@ Todas as telas do portal são **apenas leitura**.
 ## Estrutura de pastas
 
 ```
-byte7/
+coopergac/
 ├── docs/                         # memória operacional do projeto
 │   ├── project_context.md
 │   ├── session_log.md
@@ -138,7 +149,7 @@ byte7/
 │   │   ├── globals.css
 │   │   └── not-found.tsx
 │   ├── components/
-│   │   ├── ui/                  # primitivos (Button, Card, Input...)
+│   │   ├── ui/                  # primitivos (Button, Card, Input, Logo...)
 │   │   ├── layout/              # Navbar, Footer, Sidebar, Topbar
 │   │   ├── investor/            # KpiCard, EvolutionChart, UsinasMap...
 │   │   ├── blog/                # PostCard, PostForm
@@ -188,7 +199,7 @@ handlers** internas (`src/app/api/*`). Essas route handlers leem os
 2. No `.env.local` (ou `.env.production`) setar:
    ```
    NEXT_PUBLIC_DATA_SOURCE=api
-   NEXT_PUBLIC_API_BASE_URL=https://api.byte7.com.br
+   NEXT_PUBLIC_API_BASE_URL=https://api.coopergac.com.br
    ```
 3. (Opcional) Remover `src/app/api/*` e `src/mocks/*`.
 
@@ -197,7 +208,7 @@ respeitam `NEXT_PUBLIC_API_BASE_URL` através de `apiRequest`.
 
 ## Autenticação (mock)
 
-Sessão é um cookie HTTP-only `byte7_session` contendo JSON base64
+Sessão é um cookie HTTP-only `coopergac_session` contendo JSON base64
 (`{ userId, role, name }`). O `src/middleware.ts` protege:
 
 - `/admin/**` → exige `role === "admin"`
@@ -214,6 +225,13 @@ Em modo demo, os posts ficam em memória do servidor Next.js (módulo
 mas são zeradas a cada restart — comportamento esperado para
 demonstração.
 
+## Origem do projeto
+
+Este repositório é um espelho do projeto institucional **byte7**, com a
+identidade visual e a comunicação adaptadas para a marca **COOPERGAC
+Solar Energy**. A arquitetura, os mocks e os fluxos de tela permanecem
+idênticos — apenas a camada de marca muda.
+
 ## Evolução para produção
 
 Próximos passos estão documentados em [`docs/todo.md`](docs/todo.md). Em
@@ -223,7 +241,7 @@ linhas gerais:
 2. **Auth real** (NextAuth/Clerk/backend próprio).
 3. **Banco** para posts + upload de imagens (S3/Cloudinary).
 4. **Observabilidade** (Sentry + métricas Vercel).
-5. **Aplicar identidade visual oficial** quando disponível.
+5. **Integração com gateway de adesão de cooperados.**
 
 ## Contexto do projeto
 

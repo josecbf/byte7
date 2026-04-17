@@ -14,7 +14,7 @@ export default function NewInvestorPage() {
           Novo investidor
         </h1>
         <p className="mt-1 text-sm text-ink-500">
-          Cadastre um investidor no portfólio da Byte7.
+          Cadastre um investidor no portfólio da COOPERGAC.
         </p>
       </div>
       <Card>

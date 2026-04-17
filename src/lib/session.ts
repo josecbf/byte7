@@ -1,6 +1,6 @@
 import type { Session, UserRole } from "@/types/auth";
 
-export const SESSION_COOKIE = "byte7_session";
+export const SESSION_COOKIE = "coopergac_session";
 
 /**
  * Sessão mockada — JSON codificado em base64 gravado em cookie.

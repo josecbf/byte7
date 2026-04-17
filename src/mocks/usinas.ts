@@ -3,7 +3,7 @@ import type { Usina } from "@/types/investor";
 export const MOCK_USINAS: Usina[] = [
   {
     id: "usn_solar_petrolina",
-    name: "UFV Byte7 Petrolina I",
+    name: "UFV COOPERGAC Petrolina I",
     city: "Petrolina",
     state: "PE",
     capacityMwp: 5.2,
@@ -14,7 +14,7 @@ export const MOCK_USINAS: Usina[] = [
   },
   {
     id: "usn_solar_juazeiro",
-    name: "UFV Byte7 Juazeiro II",
+    name: "UFV COOPERGAC Juazeiro II",
     city: "Juazeiro",
     state: "BA",
     capacityMwp: 3.8,
@@ -25,7 +25,7 @@ export const MOCK_USINAS: Usina[] = [
   },
   {
     id: "usn_solar_mossoro",
-    name: "UFV Byte7 Mossoró",
+    name: "UFV COOPERGAC Mossoró",
     city: "Mossoró",
     state: "RN",
     capacityMwp: 4.5,
@@ -35,7 +35,7 @@ export const MOCK_USINAS: Usina[] = [
   },
   {
     id: "usn_solar_ipora",
-    name: "UFV Byte7 Iporá",
+    name: "UFV COOPERGAC Iporá",
     city: "Iporá",
     state: "GO",
     capacityMwp: 2.9,
@@ -46,7 +46,7 @@ export const MOCK_USINAS: Usina[] = [
   },
   {
     id: "usn_solar_barreiras",
-    name: "UFV Byte7 Barreiras",
+    name: "UFV COOPERGAC Barreiras",
     city: "Barreiras",
     state: "BA",
     capacityMwp: 6.0,

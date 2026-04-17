@@ -9,9 +9,12 @@ export function Footer() {
         <div className="md:col-span-2 space-y-3">
           <Logo showTag />
           <p className="text-sm text-ink-600 max-w-sm">
-            Plataforma institucional de intermediação tokenizada de ativos de
-            energia. Esta é uma <strong>versão demonstrativa</strong>,
+            Cooperativa de geração distribuída de energia solar, eletromobilidade
+            e sustentabilidade. Esta é uma <strong>versão demonstrativa</strong>,
             destinada exclusivamente à consulta, sem movimentação financeira.
+          </p>
+          <p className="text-xs italic text-brand-700/80">
+            Energia que une, fé que move, futuro que transforma.
           </p>
         </div>
         <nav className="text-sm">
@@ -38,7 +41,7 @@ export function Footer() {
       </Container>
       <div className="border-t border-ink-200">
         <Container className="py-5 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-ink-500">
-          <p>&copy; {new Date().getFullYear()} Byte7. Todos os direitos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} COOPERGAC Solar Energy. Todos os direitos reservados.</p>
           <p>Versão <strong>demonstrativa</strong> · valores ilustrativos.</p>
         </Container>
       </div>

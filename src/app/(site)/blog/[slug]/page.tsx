@@ -74,7 +74,7 @@ export default function BlogPostPage({
           </div>
         ) : null}
 
-        <div className="prose-byte7 mt-10">
+        <div className="prose-coopergac mt-10">
           {post.content.split(/\n{2,}/).map((p, i) => (
             <p key={i}>{p}</p>
           ))}

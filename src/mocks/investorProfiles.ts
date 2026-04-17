@@ -17,7 +17,7 @@ const SEED: InvestorProfile[] = [
   {
     id: "inv_001",
     fullName: "Marina Azevedo",
-    email: "investidor@byte7.com.br",
+    email: "investidor@coopergac.com.br",
     document: "123.456.789-00",
     phone: "+55 81 99876-5432",
     city: "Recife",

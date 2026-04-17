@@ -19,16 +19,17 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-ink-200 bg-gradient-to-b from-white via-brand-50/40 to-white">
         <Container className="py-20 md:py-28 grid gap-10 md:grid-cols-2 items-center">
           <div className="space-y-6">
-            <Badge tone="brand">Plataforma institucional Byte7</Badge>
+            <Badge tone="brand">Plataforma institucional COOPERGAC</Badge>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
-              Intermediação tokenizada de{" "}
-              <span className="text-brand-700">ativos de energia</span>, com rigor e transparência.
+              Energia que une, fé que move,{" "}
+              <span className="text-brand-700">futuro que transforma</span>.
             </h1>
             <p className="text-lg text-ink-600 max-w-xl">
-              A Byte7 é uma plataforma de intermediação que estrutura a
-              participação econômica de investidores em usinas de geração
-              solar fotovoltaica no Brasil. Esta versão demonstrativa apresenta
-              a camada institucional e o portal de consulta do investidor.
+              A COOPERGAC é uma cooperativa solar que une pessoas, propósito e
+              tecnologias sustentáveis. Estruturamos a participação econômica
+              de cooperados em usinas de geração solar fotovoltaica no Brasil.
+              Esta versão demonstrativa apresenta a camada institucional e o
+              portal de consulta do investidor.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/investidor/login">
@@ -47,7 +48,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-brand-100 via-brand-50 to-white blur-2xl" />
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-accent-100 via-brand-50 to-white blur-2xl" />
             <Card className="relative">
               <CardBody>
                 <div className="flex items-center justify-between">
@@ -76,12 +77,13 @@ export default function HomePage() {
         <Container className="space-y-12">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-ink-900">
-              Infraestrutura institucional ponta a ponta.
+              Nosso ecossistema solar, ponta a ponta.
             </h2>
             <p className="mt-3 text-ink-600">
-              Da camada institucional à posição consolidada do investidor, a
-              Byte7 oferece um ambiente integrado, auditável e desenhado para
-              decisões informadas.
+              Da redução da conta de luz à usina de investimento, passando por
+              energia por assinatura e mobilidade elétrica, a COOPERGAC oferece
+              um ambiente integrado, auditável e desenhado para decisões
+              informadas.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -119,13 +121,13 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="py-20 border-t border-ink-200 bg-gradient-to-br from-ink-900 to-ink-800 text-white">
+      <section className="py-20 border-t border-ink-200 bg-gradient-to-br from-brand-800 to-brand-900 text-white">
         <Container className="grid gap-8 md:grid-cols-[1fr_auto] items-center">
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight">
               Conheça o ambiente demonstrativo.
             </h2>
-            <p className="text-ink-200 max-w-2xl">
+            <p className="text-brand-100/90 max-w-2xl">
               Acesse o portal do investidor com as credenciais demonstrativas
               ou o ambiente administrativo para avaliar os fluxos de gestão de
               cadastros e conteúdo institucional.
@@ -170,7 +172,7 @@ function Feature({
   return (
     <Card>
       <CardBody className="space-y-3">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent-100 text-brand-700">
           <Icon className="h-5 w-5" />
         </span>
         <h3 className="text-lg font-semibold text-ink-900">{title}</h3>

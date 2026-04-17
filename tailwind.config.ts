@@ -5,18 +5,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Paleta provisória — identidade visual oficial ainda virá.
+        // Paleta oficial COOPERGAC — verde profundo + sol dourado.
         brand: {
-          50: "#ecfdf5",
-          100: "#d1fae5",
-          200: "#a7f3d0",
-          300: "#6ee7b7",
-          400: "#34d399",
-          500: "#10b981",
-          600: "#059669",
-          700: "#047857",
-          800: "#065f46",
-          900: "#064e3b"
+          50: "#e8f3ec",
+          100: "#c7e1d0",
+          200: "#9ccaae",
+          300: "#6bb087",
+          400: "#3f9663",
+          500: "#1f7a47",
+          600: "#155f37",
+          700: "#0e4d2c",
+          800: "#0a3d23",
+          900: "#072d1a"
+        },
+        accent: {
+          50: "#fff8e1",
+          100: "#ffecb3",
+          200: "#ffe082",
+          300: "#ffd54f",
+          400: "#ffca28",
+          500: "#f5b800",
+          600: "#d99e00",
+          700: "#b07f00",
+          800: "#8a6300",
+          900: "#5e4400"
         },
         ink: {
           50: "#f8fafc",
@@ -43,7 +55,7 @@ const config: Config = {
         ]
       },
       boxShadow: {
-        card: "0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06)"
+        card: "0 1px 2px rgba(7,45,26,0.05), 0 1px 3px rgba(7,45,26,0.08)"
       }
     }
   },

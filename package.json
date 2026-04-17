@@ -1,8 +1,8 @@
 {
-  "name": "byte7-demo",
+  "name": "coopergac-demo",
   "version": "0.1.0",
   "private": true,
-  "description": "Byte7 Demo — plataforma institucional + portal do investidor (demo mockada)",
+  "description": "COOPERGAC Solar Energy — plataforma institucional + portal do investidor (demo mockada)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

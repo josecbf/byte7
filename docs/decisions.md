@@ -42,12 +42,12 @@ services consultam `NEXT_PUBLIC_DATA_SOURCE`:
 
 ---
 
-## ADR-003 — Auth mockada via cookie `byte7_session`
+## ADR-003 — Auth mockada via cookie `coopergac_session`
 
 **Contexto:** precisamos de duas áreas protegidas (admin, investidor)
 sem criar infra real de auth.
 
-**Decisão:** cookie HTTP-only `byte7_session` com JSON base64
+**Decisão:** cookie HTTP-only `coopergac_session` com JSON base64
 `{ userId, role, name }`. Emitido por `POST /api/auth/{investor|admin}`
 após match com `src/mocks/users.ts`. Validado pelo middleware.
 

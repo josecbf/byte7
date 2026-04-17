@@ -4,20 +4,20 @@
  * para a demo — em produção viriam de uma API de mercado.
  */
 
-export type BenchmarkKey = "byte7" | "cdi" | "poupanca" | "ipca" | "ibovespa";
+export type BenchmarkKey = "coopergac" | "cdi" | "poupanca" | "ipca" | "ibovespa";
 
 /**
  * Taxas mensais constantes. Escolhidas como aproximações razoáveis:
- *   - byte7:    parâmetro fixo da demo (ver mocks/investor.ts)
- *   - cdi:      ~12.7% ao ano
- *   - poupanca: ~7.4%  ao ano (abaixo do CDI, como na realidade recente)
- *   - ipca:     ~5.0%  ao ano (inflação média)
+ *   - coopergac: parâmetro fixo da demo (ver mocks/investor.ts)
+ *   - cdi:       ~12.7% ao ano
+ *   - poupanca:  ~7.4%  ao ano (abaixo do CDI, como na realidade recente)
+ *   - ipca:      ~5.0%  ao ano (inflação média)
  */
 export const FIXED_MONTHLY_RATES: Record<
   Exclude<BenchmarkKey, "ibovespa">,
   number
 > = {
-  byte7: 0.06,
+  coopergac: 0.06,
   cdi: 0.01,
   poupanca: 0.006,
   ipca: 0.004
@@ -42,7 +42,7 @@ export function getMonthlyRate(key: BenchmarkKey, monthIndex: number): number {
 }
 
 export const BENCHMARK_LABELS: Record<BenchmarkKey, string> = {
-  byte7: "Byte7",
+  coopergac: "COOPERGAC",
   cdi: "CDI",
   poupanca: "Poupança",
   ipca: "IPCA",
@@ -50,13 +50,14 @@ export const BENCHMARK_LABELS: Record<BenchmarkKey, string> = {
 };
 
 /**
- * Cores por benchmark (Tailwind-ish). Usadas pelo gráfico e pela
- * legenda. Mantidas em um único lugar para consistência.
+ * Cores por benchmark. Usadas pelo gráfico e pela legenda.
+ * Mantidas em um único lugar para consistência. Linha COOPERGAC em
+ * verde profundo da identidade institucional.
  */
 export const BENCHMARK_COLORS: Record<BenchmarkKey, string> = {
-  byte7: "#059669",    // brand-600 (emerald)
-  cdi: "#2563eb",      // blue-600
-  poupanca: "#0891b2", // cyan-600
-  ipca: "#9333ea",     // purple-600
-  ibovespa: "#d97706"  // amber-600
+  coopergac: "#0e4d2c", // brand-700 (verde COOPERGAC)
+  cdi: "#2563eb",       // blue-600
+  poupanca: "#0891b2",  // cyan-600
+  ipca: "#9333ea",      // purple-600
+  ibovespa: "#d97706"   // amber-600
 };

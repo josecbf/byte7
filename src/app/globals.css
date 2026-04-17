@@ -22,25 +22,25 @@
 }
 
 @layer components {
-  .prose-byte7 {
+  .prose-coopergac {
     @apply text-ink-700 leading-relaxed;
   }
-  .prose-byte7 p {
+  .prose-coopergac p {
     @apply my-4;
   }
-  .prose-byte7 h2 {
+  .prose-coopergac h2 {
     @apply text-2xl font-semibold text-ink-900 mt-10 mb-4;
   }
-  .prose-byte7 h3 {
+  .prose-coopergac h3 {
     @apply text-xl font-semibold text-ink-900 mt-8 mb-3;
   }
-  .prose-byte7 ul {
+  .prose-coopergac ul {
     @apply list-disc pl-6 my-4;
   }
-  .prose-byte7 ol {
+  .prose-coopergac ol {
     @apply list-decimal pl-6 my-4;
   }
-  .prose-byte7 a {
+  .prose-coopergac a {
     @apply text-brand-700 underline underline-offset-2 hover:text-brand-800;
   }
 }

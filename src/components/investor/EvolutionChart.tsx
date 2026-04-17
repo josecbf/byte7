@@ -16,7 +16,7 @@ import { formatBRL, formatMonth } from "@/lib/format";
 import { BENCHMARK_COLORS } from "@/mocks/benchmarks";
 
 const LABELS: Record<string, string> = {
-  byte7: "Byte7",
+  coopergac: "COOPERGAC",
   cdi: "CDI",
   ibovespa: "Ibovespa",
   invested: "Total investido"
@@ -32,9 +32,9 @@ export function EvolutionChart({ data }: { data: ChartEvolutionPoint[] }) {
           margin={{ top: 10, right: 16, bottom: 0, left: 0 }}
         >
           <defs>
-            <linearGradient id="byte7Gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={BENCHMARK_COLORS.byte7} stopOpacity={0.35} />
-              <stop offset="100%" stopColor={BENCHMARK_COLORS.byte7} stopOpacity={0} />
+            <linearGradient id="coopergacGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={BENCHMARK_COLORS.coopergac} stopOpacity={0.35} />
+              <stop offset="100%" stopColor={BENCHMARK_COLORS.coopergac} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" vertical={false} />
@@ -74,10 +74,10 @@ export function EvolutionChart({ data }: { data: ChartEvolutionPoint[] }) {
           />
           <Area
             type="monotone"
-            dataKey="byte7"
-            stroke={BENCHMARK_COLORS.byte7}
+            dataKey="coopergac"
+            stroke={BENCHMARK_COLORS.coopergac}
             strokeWidth={2}
-            fill="url(#byte7Gradient)"
+            fill="url(#coopergacGradient)"
           />
           <Line
             type="monotone"

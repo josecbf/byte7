@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Byte7 — Tokenização de Energia (Demo)",
-    template: "%s · Byte7 Demo"
+    default: "COOPERGAC — Solar Energy (Demo)",
+    template: "%s · COOPERGAC Demo"
   },
   description:
-    "Demo institucional + portal do investidor da Byte7, plataforma de intermediação de tokenização de energia. Versão de demonstração, apenas para consulta.",
+    "Demo institucional + portal do investidor da COOPERGAC, cooperativa de energia solar. Energia que une, fé que move, futuro que transforma. Versão de demonstração, apenas para consulta.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   )

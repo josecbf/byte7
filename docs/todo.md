@@ -1,4 +1,4 @@
-# TODO — Byte7 Demo
+# TODO — COOPERGAC Demo
 
 > Pendências e melhorias conhecidas. Marcar com `[x]` quando concluído.
 
@@ -24,7 +24,7 @@
 
 - [x] KPI "Rentabilidade (%)" no dashboard
 - [x] Curvas CDI e Ibovespa no gráfico de evolução (+ Total investido)
-- [x] Tabela comparativa mensal (Byte7, Poupança, IPCA, CDI, Ibovespa)
+- [x] Tabela comparativa mensal (COOPERGAC, Poupança, IPCA, CDI, Ibovespa)
       com linha "Acumulado (%)" via juros compostos
 - [x] Utilitário `finance.ts` (buildSeries/accumulatedReturn/totalReturnRate)
 - [x] Mocks de benchmarks com cores e labels centralizados
@@ -60,7 +60,7 @@
   - setar `NEXT_PUBLIC_DATA_SOURCE=api`
   - remover `src/app/api/*` e `src/mocks/*`
 - [ ] Auth real (NextAuth / Clerk / backend próprio)
-  - manter o cookie `byte7_session` como interface ou migrar o middleware
+  - manter o cookie `coopergac_session` como interface ou migrar o middleware
 - [ ] Persistência real para posts (Postgres + Prisma é o mais direto)
 - [ ] Upload de imagens para os posts (S3/Cloudinary)
 - [ ] SEO: sitemap, Open Graph, metadata por rota

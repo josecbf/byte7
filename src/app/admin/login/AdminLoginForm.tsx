@@ -35,7 +35,7 @@ export function AdminLoginForm() {
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { email: "admin@byte7.com.br", password: "admin123" }
+    defaultValues: { email: "admin@coopergac.com.br", password: "admin123" }
   });
 
   const submit = handleSubmit(async (values) => {
@@ -94,7 +94,7 @@ export function AdminLoginForm() {
 
             <div className="rounded-md bg-ink-50 border border-ink-100 p-3 text-xs text-ink-600 space-y-1">
               <p className="font-medium text-ink-800">Credenciais da demo</p>
-              <p><code>admin@byte7.com.br</code> · <code>admin123</code></p>
+              <p><code>admin@coopergac.com.br</code> · <code>admin123</code></p>
             </div>
 
             <p className="text-center text-xs text-ink-500">

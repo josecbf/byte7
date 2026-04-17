@@ -19,7 +19,7 @@ export function ComparativeTable({
   totals: ComparativeAccumulated;
 }) {
   const cols = [
-    { key: "byte7", label: "Byte7", color: BENCHMARK_COLORS.byte7 },
+    { key: "coopergac", label: "COOPERGAC", color: BENCHMARK_COLORS.coopergac },
     { key: "poupanca", label: "Poupança", color: BENCHMARK_COLORS.poupanca },
     { key: "ipca", label: "IPCA", color: BENCHMARK_COLORS.ipca },
     { key: "cdi", label: "CDI", color: BENCHMARK_COLORS.cdi },

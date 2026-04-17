@@ -58,7 +58,7 @@ export interface DashboardSummary {
 export interface ChartEvolutionPoint {
   month: string;
   invested: number;
-  byte7: number;
+  coopergac: number;
   cdi: number;
   ibovespa: number;
 }
@@ -69,7 +69,7 @@ export interface ChartEvolutionPoint {
  */
 export interface ComparativeMonthRow {
   month: string;
-  byte7: number;
+  coopergac: number;
   poupanca: number;
   ipca: number;
   cdi: number;
@@ -80,7 +80,7 @@ export interface ComparativeMonthRow {
  * Rentabilidade acumulada (fração) do período para cada benchmark.
  */
 export interface ComparativeAccumulated {
-  byte7: number;
+  coopergac: number;
   poupanca: number;
   ipca: number;
   cdi: number;
