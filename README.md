@@ -71,6 +71,22 @@ Acesse <http://localhost:3000>.
 | `npm run lint`      | ESLint                                   |
 | `npm run typecheck` | Verificação de tipos (TS, sem emit)      |
 
+## Capturas de tela
+
+As capturas da versão COOPERGAC estão em
+[`docs/screenshots/`](docs/screenshots/) — 17 imagens cobrindo site
+institucional, blog, logins, portal do investidor (dashboard, aportes,
+usinas, contrato) e área administrativa (dashboard, posts, investidores).
+
+Para regenerar as capturas após mudanças visuais:
+
+```bash
+npm run build && npm start &
+npm run capture
+```
+
+O script usa Puppeteer e grava PNGs em `docs/screenshots/`.
+
 ## Credenciais de demonstração
 
 | Perfil      | E-mail                          | Senha            |
