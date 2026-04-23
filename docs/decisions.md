@@ -287,3 +287,36 @@ aplica o filtro pelo `?investor=<id>` vindo do `searchParams`.
 - Admin dashboard nunca passa por esse helper; ele lê `MOCK_APORTES`
   direto e aplica o filtro pela query string. Os dois fluxos ficam
   explicitamente diferentes, o que é o comportamento correto.
+
+---
+
+## ADR-015 — Hosting na Vercel (conta pessoal, zero config)
+
+**Contexto:** precisávamos colocar a demo online para demonstração.
+Opções óbvias: Vercel, Netlify, Render, Fly.io, VPS próprio. A
+aplicação é Next.js 14 App Router puro, sem backend externo nem
+banco — o que favorece o fit nativo da Vercel (framework deles,
+deploy em segundos, edge middleware sem config).
+
+**Decisão:** deploy na **Vercel**, no escopo pessoal
+`jcbezerrafh-3914`, projeto `byte7`. Sem variáveis de ambiente
+configuradas no dashboard — a demo usa defaults do código
+(`NEXT_PUBLIC_DATA_SOURCE=mock`). Alias de produção:
+https://byte7.vercel.app.
+
+**Consequências:**
+- Deploy subsequente: `vercel` gera preview, `vercel --prod` promove.
+  No **primeiro** deploy de um projeto novo, o `vercel --yes` foi
+  direto para produção — fica registrado aqui para não surpreender
+  numa próxima vez.
+- Quando a autenticação sair do mock, será preciso criar as env vars
+  (ex.: `SESSION_SECRET`, `NEXT_PUBLIC_API_BASE_URL`) no dashboard
+  Vercel antes de promover.
+- Quando a identidade visual oficial chegar, re-deploy é só push →
+  rebuild automático.
+- Migrar para outro host (Netlify / self-hosted Node) é localizado:
+  Next.js 14 roda em qualquer lugar; só precisaríamos replicar o
+  middleware como função edge ou node.
+- Arquivo `.vercel/` ficou local (já estava no `.gitignore`) — a
+  ligação projeto↔conta é recriada com `vercel link` em qualquer
+  máquina nova.

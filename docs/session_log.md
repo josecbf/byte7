@@ -169,3 +169,39 @@ quebrar o portal do investidor existente.
 único de amarração sessão↔perfil).
 
 **Pendente / próximos passos:** ver `docs/todo.md`.
+
+---
+
+## 2026-04-23 — Sessão 5 · Deploy público na Vercel
+
+**Objetivo:** publicar a demo online para demonstração.
+
+**Feito:**
+
+- Projeto linkado à Vercel (escopo pessoal `jcbezerrafh-3914`, nome
+  `byte7`) via `vercel --yes` a partir da raiz do repo.
+- Build remoto concluído (27 rotas, Next.js 14.2.15, middleware
+  edge de auth embarcado). Nenhuma env var foi definida — a demo
+  roda 100% em mock (`NEXT_PUBLIC_DATA_SOURCE=mock` é o default do
+  código, e o `.env.example` não tem segredos reais).
+- Smoke test remoto: `/`, `/investidor/login` e `/admin/login`
+  retornam 200.
+- `.vercel/` gerado localmente e já coberto pelo `.gitignore`
+  (linha 36).
+
+**URLs públicas:**
+- Produção (alias estável): https://byte7.vercel.app
+- Deploy específico: https://byte7-k2vifpunu-jose-carlos-bezerra-filhos-projects.vercel.app
+- Inspector: https://vercel.com/jose-carlos-bezerra-filhos-projects/byte7
+
+**Observação importante:** a intenção era fazer um **preview
+primeiro** e só depois promover. Porém, como era o primeiro deploy
+do projeto, a Vercel CLI promoveu direto para produção (target
+"production" no retorno da API, alias `byte7.vercel.app` criado).
+A partir de agora, `vercel` sem flags gera preview; promoção requer
+`vercel --prod` explicitamente (ver ADR-015).
+
+**Decisões registradas:** ADR-015 (hosting na Vercel, conta pessoal
+`jcbezerrafh-3914`).
+
+**Pendente / próximos passos:** ver `docs/todo.md`.

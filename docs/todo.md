@@ -2,6 +2,11 @@
 
 > Pendências e melhorias conhecidas. Marcar com `[x]` quando concluído.
 
+## Entregue na Sessão 5
+
+- [x] Deploy público na Vercel (https://byte7.vercel.app) —
+  conta pessoal, zero env vars (roda em mock)
+
 ## Entregue na Sessão 4
 
 - [x] Dashboard admin consolidado (`/admin/dashboard`) com dropdown
