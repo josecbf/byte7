@@ -22,14 +22,14 @@ const schema = z.object({
     .string()
     .regex(/^\d{4}-\d{2}$/, "Formato esperado: YYYY-MM."),
   invested: z
-    .number({ invalid_type_error: "Valor numérico." })
+    .number({ invalid_type_error: "Informe um valor numérico em reais." })
     .min(0, "Deve ser ≥ 0."),
   ratePct: z
-    .number({ invalid_type_error: "Valor numérico." })
+    .number({ invalid_type_error: "Informe a taxa em %." })
     .min(-100, "Taxa muito baixa.")
     .max(100, "Taxa muito alta."),
   balance: z
-    .number({ invalid_type_error: "Valor numérico." })
+    .number({ invalid_type_error: "Informe um valor numérico em reais." })
     .min(0, "Deve ser ≥ 0."),
   note: z.string().optional()
 });
@@ -55,6 +55,7 @@ export function StatementsSection({
   const router = useRouter();
   const [editing, setEditing] = useState<MonthlyStatement | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
   const {
@@ -64,11 +65,13 @@ export function StatementsSection({
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    // Defaults vazios no primeiro render para evitar hydration mismatch;
+    // preenchimento no mount via useEffect.
     defaultValues: {
-      month: currentMonth(),
-      invested: 0,
-      ratePct: 6,
-      balance: 0,
+      month: "",
+      invested: undefined as unknown as number,
+      ratePct: undefined as unknown as number,
+      balance: undefined as unknown as number,
       note: ""
     }
   });
@@ -85,9 +88,9 @@ export function StatementsSection({
     } else {
       reset({
         month: currentMonth(),
-        invested: 0,
+        invested: undefined as unknown as number,
         ratePct: 6,
-        balance: 0,
+        balance: undefined as unknown as number,
         note: ""
       });
     }
@@ -97,6 +100,7 @@ export function StatementsSection({
 
   const submit = handleSubmit(async (values) => {
     setError(null);
+    setSuccess(null);
     const payload = {
       month: values.month,
       invested: Number(values.invested),
@@ -114,6 +118,15 @@ export function StatementsSection({
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.message ?? "Falha ao salvar lançamento.");
       }
+      const created = (await res.json().catch(() => null)) as
+        | { month?: string; id?: string }
+        | null;
+      const label = created?.month ?? values.month;
+      setSuccess(
+        editing
+          ? `Correção de ${label} registrada.`
+          : `Lançamento de ${label} criado.`
+      );
       setEditing(null);
       router.refresh();
     } catch (err) {
@@ -159,6 +172,7 @@ export function StatementsSection({
       </CardHeader>
       <CardBody className="space-y-5">
         {error ? <Alert tone="error">{error}</Alert> : null}
+        {success ? <Alert tone="success">{success}</Alert> : null}
 
         <form
           onSubmit={submit}

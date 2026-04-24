@@ -20,7 +20,7 @@ import { formatBRL, formatDate } from "@/lib/format";
 const schema = z.object({
   date: z.string().min(1, "Informe a data."),
   amount: z
-    .number({ invalid_type_error: "Valor numérico." })
+    .number({ invalid_type_error: "Informe um valor positivo em reais." })
     .positive("Valor deve ser positivo."),
   usinaId: z.string().min(1, "Selecione a usina."),
   reference: z.string().optional()
@@ -30,6 +30,10 @@ type FormValues = z.infer<typeof schema>;
 
 function isActive(a: Aporte): boolean {
   return a.supersededBy === null && a.voidedAt === null;
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
 }
 
 export function AportesSection({
@@ -44,6 +48,7 @@ export function AportesSection({
   const router = useRouter();
   const [editing, setEditing] = useState<Aporte | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const defaultUsinaId = useMemo(() => usinas[0]?.id ?? "", [usinas]);
 
@@ -54,10 +59,11 @@ export function AportesSection({
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    // Defaults vazios para evitar hydration mismatch — preenchidos no mount.
     defaultValues: {
-      date: new Date().toISOString().slice(0, 10),
-      amount: 0,
-      usinaId: defaultUsinaId,
+      date: "",
+      amount: undefined as unknown as number,
+      usinaId: "",
       reference: ""
     }
   });
@@ -72,8 +78,8 @@ export function AportesSection({
       });
     } else {
       reset({
-        date: new Date().toISOString().slice(0, 10),
-        amount: 0,
+        date: todayIso(),
+        amount: undefined as unknown as number,
         usinaId: defaultUsinaId,
         reference: ""
       });
@@ -85,6 +91,7 @@ export function AportesSection({
 
   const submit = handleSubmit(async (values) => {
     setError(null);
+    setSuccess(null);
     const usina = usinas.find((u) => u.id === values.usinaId);
     const payload = {
       date: values.date,
@@ -104,6 +111,13 @@ export function AportesSection({
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.message ?? "Falha ao salvar aporte.");
       }
+      const created = (await res.json().catch(() => null)) as
+        | { id?: string; reference?: string }
+        | null;
+      const label = created?.reference ?? created?.id ?? "aporte";
+      setSuccess(
+        editing ? `Correção registrada (${label}).` : `Aporte criado (${label}).`
+      );
       setEditing(null);
       router.refresh();
     } catch (err) {
@@ -149,6 +163,7 @@ export function AportesSection({
       </CardHeader>
       <CardBody className="space-y-5">
         {error ? <Alert tone="error">{error}</Alert> : null}
+        {success ? <Alert tone="success">{success}</Alert> : null}
 
         <form
           onSubmit={submit}
