@@ -32,6 +32,7 @@ export function Footer() {
           </p>
           <ul className="space-y-2">
             <li><Link className="text-ink-700 hover:text-brand-700" href="/investidor/login">Portal do investidor</Link></li>
+            <li><Link className="text-ink-700 hover:text-brand-700" href="/editor/login">Edição do blog</Link></li>
             <li><Link className="text-ink-700 hover:text-brand-700" href="/admin/login">Ambiente administrativo</Link></li>
           </ul>
         </nav>

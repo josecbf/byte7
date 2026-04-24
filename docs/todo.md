@@ -2,6 +2,48 @@
 
 > Pendências e melhorias conhecidas. Marcar com `[x]` quando concluído.
 
+## Entregue na Sessão 7
+
+- [x] Modelo `MonthlyStatement` + integração no dashboard (statement
+  sobrescreve fallback 6% a.m. quando presente)
+- [x] Aportes CRUD por admin (`/admin/investidores/[id]/financeiro`)
+- [x] Lançamentos mensais CRUD por admin (mesma tela)
+- [x] Log de auditoria append-only + helper `recordAudit` usado em
+  todas as mutações financeiras e de cadastro
+- [x] Tela `/admin/auditoria` com filtros (investidor, entidade,
+  origem, ator, período) e detalhamento `before/after` expansível
+- [x] Aportes extraídos para `mocks/aportes.ts` (CRUD unificado)
+- [x] **Append-only** nos stores de aportes e statements (ADR-019):
+  supersede automático, void em vez de delete, UI com badges de
+  status, PUT removido
+
+## Entregue na Sessão 8
+
+- [x] Admin cria acesso de investidor (`POST /api/investors/[id]/login`)
+- [x] Admin redefine senha (`PUT /api/investors/[id]/login/password`)
+- [x] Card `LoginSection` na tela `/admin/investidores/[id]/edit` com
+  estado create vs reset
+- [x] Auditoria `entity=user_login` sem persistir senha em `before`/
+  `after` (ADR-020)
+
+## Entregue na Sessão 9
+
+- [x] Export `.xlsx` dos lançamentos ativos (`GET /api/admin/statements/export`)
+- [x] Import `.xlsx` com apuração por linha
+  (`unchanged | created | superseded | error`) e auditoria com
+  `source: "excel_upload"`
+- [x] Página `/admin/importacao` (download + upload + summary)
+- [x] Biblioteca `exceljs` (em vez de `xlsx`/SheetJS, que tinha
+  advisories sem fix) — ADR-021
+
+## Entregue na Sessão 6
+
+- [x] Separação de papéis: novo `editor` com área `/editor/*`
+  (blog-only) + admin continua em `/admin/*` com acesso a tudo
+- [x] Componentes de CRUD de blog parametrizados por `basePath`
+  (PostsTable, NewPostClient, EditPostClient)
+- [x] Seed `editor@byte7.com.br` / `editor123`
+
 ## Entregue na Sessão 5
 
 - [x] Deploy público na Vercel (https://byte7.vercel.app) —

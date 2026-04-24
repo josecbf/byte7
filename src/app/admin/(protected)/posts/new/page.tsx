@@ -1,12 +1,7 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/Card";
-import { PostForm } from "@/components/blog/PostForm";
-import { blogService } from "@/services/blog.service";
+import { NewPostClient } from "@/components/blog/NewPostClient";
 
 export default function NewPostPage() {
-  const router = useRouter();
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
@@ -22,14 +17,7 @@ export default function NewPostPage() {
           <CardTitle>Conteúdo</CardTitle>
         </CardHeader>
         <CardBody>
-          <PostForm
-            submitLabel="Criar post"
-            onSubmit={async (input) => {
-              await blogService.create(input);
-              router.replace("/admin/posts");
-              router.refresh();
-            }}
-          />
+          <NewPostClient basePath="/admin" />
         </CardBody>
       </Card>
     </div>

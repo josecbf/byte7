@@ -7,7 +7,9 @@ import type {
   DashboardSummary,
   MonthlyEvolutionPoint
 } from "@/types/investor";
+import type { MonthlyStatement } from "@/types/statement";
 import { MOCK_USINAS } from "./usinas";
+import { listAportes } from "./aportes";
 import {
   accumulatedReturn,
   buildSeries,
@@ -17,115 +19,90 @@ import { getMonthlyRate } from "./benchmarks";
 
 /**
  * Parâmetros da demo.
- * Rendimento fixo em 6% ao mês (conforme briefing).
+ * Rendimento fixo em 6% ao mês usado como fallback quando o admin não
+ * registrou um `MonthlyStatement` para o mês (ADR-007 + ADR-017).
  */
 export const MONTHLY_YIELD_RATE = 0.06;
 
 /**
- * Aportes do investidor de demonstração. Eles definem o "total bruto
- * investido" e a data-base de cada tranche — a evolução mensal é
- * derivada matematicamente a partir daqui.
- */
-export const MOCK_APORTES: Aporte[] = [
-  // === Marina Azevedo (inv_001) — investidora âncora ===
-  {
-    id: "apt_001",
-    investorId: "inv_001",
-    date: "2025-05-12",
-    amount: 25000,
-    usinaId: "usn_solar_petrolina",
-    usinaName: "UFV Byte7 Petrolina I",
-    reference: "APT-2025-001"
-  },
-  {
-    id: "apt_002",
-    investorId: "inv_001",
-    date: "2025-07-03",
-    amount: 15000,
-    usinaId: "usn_solar_juazeiro",
-    usinaName: "UFV Byte7 Juazeiro II",
-    reference: "APT-2025-002"
-  },
-  {
-    id: "apt_003",
-    investorId: "inv_001",
-    date: "2025-09-22",
-    amount: 30000,
-    usinaId: "usn_solar_ipora",
-    usinaName: "UFV Byte7 Iporá",
-    reference: "APT-2025-003"
-  },
-  {
-    id: "apt_004",
-    investorId: "inv_001",
-    date: "2025-12-10",
-    amount: 20000,
-    usinaId: "usn_solar_petrolina",
-    usinaName: "UFV Byte7 Petrolina I",
-    reference: "APT-2025-004"
-  },
-  {
-    id: "apt_005",
-    investorId: "inv_001",
-    date: "2026-02-05",
-    amount: 40000,
-    usinaId: "usn_solar_juazeiro",
-    usinaName: "UFV Byte7 Juazeiro II",
-    reference: "APT-2026-001"
-  },
-  // === Fernando Ribeiro (inv_002) — carteira de médio prazo ===
-  {
-    id: "apt_006",
-    investorId: "inv_002",
-    date: "2026-02-14",
-    amount: 50000,
-    usinaId: "usn_solar_petrolina",
-    usinaName: "UFV Byte7 Petrolina I",
-    reference: "APT-2026-F01"
-  },
-  {
-    id: "apt_007",
-    investorId: "inv_002",
-    date: "2026-03-05",
-    amount: 35000,
-    usinaId: "usn_solar_juazeiro",
-    usinaName: "UFV Byte7 Juazeiro II",
-    reference: "APT-2026-F02"
-  },
-  {
-    id: "apt_008",
-    investorId: "inv_002",
-    date: "2026-04-01",
-    amount: 20000,
-    usinaId: "usn_solar_ipora",
-    usinaName: "UFV Byte7 Iporá",
-    reference: "APT-2026-F03"
-  }
-  // === Carla Menezes (inv_003) — cadastro pendente, ainda sem aportes ===
-];
-
-/**
- * Evolução mensal da posição Byte7 (rendimento contratado 6% a.m.).
- * Delegamos o cálculo ao utilitário `buildSeries` que é reutilizado
- * pelas séries de benchmarks (CDI, Ibovespa, etc).
+ * Evolução mensal da posição Byte7.
+ * - Baseline: aportes + 6% a.m. via `buildSeries`.
+ * - Override: se existir um `MonthlyStatement` para `(investor, mês)`,
+ *   os valores de `invested/balance` daquele mês vêm do statement
+ *   (ADR-017). Meses sem statement continuam no fallback computado.
  */
 export function buildMonthlyEvolution(
-  aportes: Aporte[] = MOCK_APORTES,
+  aportes: Aporte[] = listAportes(),
+  statements: MonthlyStatement[] = [],
   rate = MONTHLY_YIELD_RATE,
   until: Date = new Date()
 ): MonthlyEvolutionPoint[] {
-  return buildSeries(aportes, () => rate, until);
+  if (aportes.length === 0 && statements.length === 0) return [];
+
+  // Caso especial: sem aportes, só statements (ex.: investidor cuja
+  // operação começou em meses registrados manualmente).
+  if (aportes.length === 0) {
+    const sorted = [...statements].sort((a, b) => a.month.localeCompare(b.month));
+    return sorted.map((s, i, arr) => {
+      const prev = i > 0 ? arr[i - 1] : null;
+      return {
+        month: s.month,
+        invested: s.invested,
+        balance: Math.round(s.balance * 100) / 100,
+        yieldAmount:
+          Math.round(
+            (s.balance - (prev?.balance ?? 0) - (s.invested - (prev?.invested ?? 0))) *
+              100
+          ) / 100
+      };
+    });
+  }
+
+  const baseline = buildSeries(aportes, () => rate, until);
+  if (statements.length === 0) return baseline;
+
+  const byMonth = new Map<string, MonthlyStatement>();
+  for (const s of statements) byMonth.set(s.month, s);
+
+  const adjusted: MonthlyEvolutionPoint[] = [];
+  for (let i = 0; i < baseline.length; i++) {
+    const p = baseline[i];
+    const stm = byMonth.get(p.month);
+    if (!stm) {
+      adjusted.push(p);
+      continue;
+    }
+    const prev = adjusted[i - 1];
+    const prevBalance = prev?.balance ?? 0;
+    const prevInvested = prev?.invested ?? 0;
+    adjusted.push({
+      month: p.month,
+      invested: stm.invested,
+      balance: Math.round(stm.balance * 100) / 100,
+      yieldAmount:
+        Math.round(
+          (stm.balance - prevBalance - (stm.invested - prevInvested)) * 100
+        ) / 100
+    });
+  }
+  return adjusted;
 }
 
 export function buildDashboardSummary(
-  aportes: Aporte[] = MOCK_APORTES,
+  aportes: Aporte[] = listAportes(),
+  statements: MonthlyStatement[] = [],
   rate = MONTHLY_YIELD_RATE
 ): DashboardSummary {
-  const evolution = buildMonthlyEvolution(aportes, rate);
+  const evolution = buildMonthlyEvolution(aportes, statements, rate);
   const last = evolution[evolution.length - 1];
-  const totalInvested = aportes.reduce((sum, a) => sum + a.amount, 0);
+  // Quando há statement no último mês, `invested`/`balance` do KPI
+  // refletem o registrado (não a soma bruta de aportes).
+  const totalInvested = last
+    ? last.invested
+    : aportes.reduce((sum, a) => sum + a.amount, 0);
   const consolidatedBalance = last ? last.balance : 0;
-  const first = [...aportes].sort((a, b) => a.date.localeCompare(b.date))[0];
+  const firstAporte = [...aportes].sort((a, b) => a.date.localeCompare(b.date))[0];
+  const firstMonth = evolution[0]?.month;
   return {
     totalInvested,
     consolidatedBalance,
@@ -133,23 +110,32 @@ export function buildDashboardSummary(
       Math.round((consolidatedBalance - totalInvested) * 100) / 100,
     monthlyYieldRate: rate,
     aportesCount: aportes.length,
-    since: first?.date ?? new Date().toISOString().slice(0, 10)
+    since:
+      firstAporte?.date ??
+      (firstMonth ? `${firstMonth}-01` : new Date().toISOString().slice(0, 10))
   };
 }
 
 /**
- * Série combinada para o gráfico: para cada mês da janela, calcula o
- * saldo de Byte7, CDI e Ibovespa aplicando os MESMOS aportes sob cada
- * taxa. Assim as três curvas partem do mesmo valor inicial e são
- * diretamente comparáveis na mesma escala.
+ * Série combinada para o gráfico: Byte7 (com override por statements)
+ * × CDI × Ibovespa. Benchmarks continuam sendo derivados dos aportes
+ * (sem noção de statements) — a comparação é sempre "aportes reais sob
+ * benchmark externo".
  */
 export function buildChartEvolution(
-  aportes: Aporte[] = MOCK_APORTES,
+  aportes: Aporte[] = listAportes(),
+  statements: MonthlyStatement[] = [],
   until: Date = new Date()
 ): ChartEvolutionPoint[] {
-  const byte7 = buildSeries(aportes, () => MONTHLY_YIELD_RATE, until);
-  const cdi = buildSeries(aportes, (i) => getMonthlyRate("cdi", i), until);
-  const ibov = buildSeries(aportes, (i) => getMonthlyRate("ibovespa", i), until);
+  const byte7 = buildMonthlyEvolution(aportes, statements, MONTHLY_YIELD_RATE, until);
+  const cdi =
+    aportes.length > 0
+      ? buildSeries(aportes, (i) => getMonthlyRate("cdi", i), until)
+      : [];
+  const ibov =
+    aportes.length > 0
+      ? buildSeries(aportes, (i) => getMonthlyRate("ibovespa", i), until)
+      : [];
   return byte7.map((p, idx) => ({
     month: p.month,
     invested: p.invested,
@@ -160,18 +146,19 @@ export function buildChartEvolution(
 }
 
 /**
- * Tabela comparativa mensal: para cada mês da janela, devolve a taxa
- * mensal aplicada em cada benchmark. A linha de "Acumulado (%)" é
- * entregue em `totals`, calculada via juros compostos sobre as taxas.
+ * Tabela comparativa mensal. Para Byte7 usamos o `rate` do statement
+ * quando existe; demais benchmarks sempre vêm dos mocks de mercado.
  */
 export function buildComparative(
-  aportes: Aporte[] = MOCK_APORTES,
+  aportes: Aporte[] = listAportes(),
+  statements: MonthlyStatement[] = [],
   until: Date = new Date()
 ): { rows: ComparativeMonthRow[]; totals: ComparativeAccumulated } {
-  const series = buildMonthlyEvolution(aportes, MONTHLY_YIELD_RATE, until);
+  const series = buildMonthlyEvolution(aportes, statements, MONTHLY_YIELD_RATE, until);
+  const stmByMonth = new Map(statements.map((s) => [s.month, s.rate]));
   const rows: ComparativeMonthRow[] = series.map((p, i) => ({
     month: p.month,
-    byte7: getMonthlyRate("byte7", i),
+    byte7: stmByMonth.get(p.month) ?? getMonthlyRate("byte7", i),
     poupanca: getMonthlyRate("poupanca", i),
     ipca: getMonthlyRate("ipca", i),
     cdi: getMonthlyRate("cdi", i),
@@ -189,15 +176,11 @@ export function buildComparative(
   return { rows, totals };
 }
 
-/**
- * Rentabilidade total do investidor Byte7 (fração). Consistente com
- * o KPI "Rentabilidade (%)" do dashboard.
- */
 export function computeByte7ReturnRate(
-  aportes: Aporte[] = MOCK_APORTES,
-  rate = MONTHLY_YIELD_RATE
+  aportes: Aporte[] = listAportes(),
+  statements: MonthlyStatement[] = []
 ): number {
-  const summary = buildDashboardSummary(aportes, rate);
+  const summary = buildDashboardSummary(aportes, statements);
   return totalReturnRate(summary.totalInvested, summary.consolidatedBalance);
 }
 

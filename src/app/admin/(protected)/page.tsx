@@ -4,7 +4,9 @@ import { Card, CardBody } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { listPosts } from "@/mocks/posts";
 import { listInvestors } from "@/mocks/investorProfiles";
-import { MOCK_APORTES, buildDashboardSummary } from "@/mocks/investor";
+import { listAportes } from "@/mocks/aportes";
+import { listStatements } from "@/mocks/statements";
+import { buildDashboardSummary } from "@/mocks/investor";
 import { formatBRL } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +20,7 @@ export default function AdminOverviewPage() {
   const activeInvestors = investors.filter((i) => i.status === "ativo").length;
   const pendingInvestors = investors.filter((i) => i.status === "pendente").length;
 
-  const consolidated = buildDashboardSummary(MOCK_APORTES);
+  const consolidated = buildDashboardSummary(listAportes(), listStatements());
 
   return (
     <div className="space-y-8 max-w-5xl">

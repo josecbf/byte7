@@ -43,3 +43,11 @@ export function decodeSession(value: string | undefined | null): Session | null 
 export function matchesRole(session: Session | null, role: UserRole): boolean {
   return !!session && session.role === role;
 }
+
+/**
+ * Permissão de escrita no blog — admin e editor têm acesso igual ao
+ * CRUD de posts. Usado por route handlers de `/api/posts/*`.
+ */
+export function canEditBlog(session: Session | null): boolean {
+  return !!session && (session.role === "admin" || session.role === "editor");
+}

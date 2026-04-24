@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/Card";
 import { getPostById } from "@/mocks/posts";
-import { EditPostClient } from "./EditPostClient";
+import { EditPostClient } from "@/components/blog/EditPostClient";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export default function EditPostPage({
           <CardTitle>Conteúdo</CardTitle>
         </CardHeader>
         <CardBody>
-          <EditPostClient post={post} />
+          <EditPostClient post={post} basePath="/admin" />
         </CardBody>
       </Card>
     </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { SESSION_COOKIE, decodeSession, matchesRole } from "@/lib/session";
+import { SESSION_COOKIE, canEditBlog, decodeSession } from "@/lib/session";
 import { deletePost, getPostById, updatePost } from "@/mocks/posts";
 import type { BlogPostInput } from "@/types/blog";
 
@@ -12,7 +12,7 @@ export async function GET(_req: Request, ctx: { params: { id: string } }) {
     return NextResponse.json({ message: "Post não encontrado." }, { status: 404 });
   }
   const session = decodeSession(cookies().get(SESSION_COOKIE)?.value);
-  if (post.status === "draft" && !matchesRole(session, "admin")) {
+  if (post.status === "draft" && !canEditBlog(session)) {
     return NextResponse.json({ message: "Post não encontrado." }, { status: 404 });
   }
   return NextResponse.json(post);
@@ -20,7 +20,7 @@ export async function GET(_req: Request, ctx: { params: { id: string } }) {
 
 export async function PUT(req: Request, ctx: { params: { id: string } }) {
   const session = decodeSession(cookies().get(SESSION_COOKIE)?.value);
-  if (!matchesRole(session, "admin")) {
+  if (!canEditBlog(session)) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
   const patch = (await req.json().catch(() => null)) as Partial<BlogPostInput> | null;
@@ -36,7 +36,7 @@ export async function PUT(req: Request, ctx: { params: { id: string } }) {
 
 export async function DELETE(_req: Request, ctx: { params: { id: string } }) {
   const session = decodeSession(cookies().get(SESSION_COOKIE)?.value);
-  if (!matchesRole(session, "admin")) {
+  if (!canEditBlog(session)) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
   const ok = deletePost(ctx.params.id);

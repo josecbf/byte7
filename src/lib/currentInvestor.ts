@@ -1,8 +1,10 @@
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, decodeSession } from "@/lib/session";
 import { MOCK_USERS } from "@/mocks/users";
-import { MOCK_APORTES } from "@/mocks/investor";
+import { listAportes } from "@/mocks/aportes";
+import { listStatements } from "@/mocks/statements";
 import type { Aporte } from "@/types/investor";
+import type { MonthlyStatement } from "@/types/statement";
 
 /**
  * Helpers para resolver — em Server Components e route handlers — qual
@@ -23,5 +25,11 @@ export function getCurrentInvestorProfileId(): string | null {
 export function getCurrentInvestorAportes(): Aporte[] {
   const id = getCurrentInvestorProfileId();
   if (!id) return [];
-  return MOCK_APORTES.filter((a) => a.investorId === id);
+  return listAportes({ investorId: id });
+}
+
+export function getCurrentInvestorStatements(): MonthlyStatement[] {
+  const id = getCurrentInvestorProfileId();
+  if (!id) return [];
+  return listStatements({ investorId: id });
 }

@@ -14,6 +14,12 @@ export const authService = {
       body: payload
     });
   },
+  loginEditor(payload: LoginPayload): Promise<AuthUser> {
+    return apiRequest<AuthUser>("/api/auth/editor", {
+      method: "POST",
+      body: payload
+    });
+  },
   logout(): Promise<void> {
     return apiRequest("/api/auth/logout", { method: "POST" });
   },

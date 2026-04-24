@@ -5,7 +5,13 @@ import { PostForm } from "@/components/blog/PostForm";
 import type { BlogPost } from "@/types/blog";
 import { blogService } from "@/services/blog.service";
 
-export function EditPostClient({ post }: { post: BlogPost }) {
+export function EditPostClient({
+  post,
+  basePath
+}: {
+  post: BlogPost;
+  basePath: string;
+}) {
   const router = useRouter();
   return (
     <PostForm
@@ -13,7 +19,7 @@ export function EditPostClient({ post }: { post: BlogPost }) {
       submitLabel="Salvar alterações"
       onSubmit={async (input) => {
         await blogService.update(post.id, input);
-        router.replace("/admin/posts");
+        router.replace(`${basePath}/posts`);
         router.refresh();
       }}
     />

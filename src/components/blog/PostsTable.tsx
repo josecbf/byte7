@@ -10,7 +10,13 @@ import { Button } from "@/components/ui/Button";
 import { formatDate } from "@/lib/format";
 import { blogService } from "@/services/blog.service";
 
-export function AdminPostsTable({ posts }: { posts: BlogPost[] }) {
+export function PostsTable({
+  posts,
+  basePath
+}: {
+  posts: BlogPost[];
+  basePath: string;
+}) {
   const router = useRouter();
   const [deleting, setDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +39,7 @@ export function AdminPostsTable({ posts }: { posts: BlogPost[] }) {
     return (
       <div className="p-10 text-center text-sm text-ink-600">
         Nenhum post ainda.{" "}
-        <Link href="/admin/posts/new" className="text-brand-700 underline">
+        <Link href={`${basePath}/posts/new`} className="text-brand-700 underline">
           Crie o primeiro
         </Link>
         .
@@ -83,7 +89,7 @@ export function AdminPostsTable({ posts }: { posts: BlogPost[] }) {
                       </Button>
                     </Link>
                   ) : null}
-                  <Link href={`/admin/posts/${p.id}/edit`}>
+                  <Link href={`${basePath}/posts/${p.id}/edit`}>
                     <Button variant="outline" size="sm">
                       <Pencil className="h-4 w-4" />
                       Editar

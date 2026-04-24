@@ -7,6 +7,7 @@ import {
   updateInvestor
 } from "@/mocks/investorProfiles";
 import type { InvestorProfileInput } from "@/types/investorProfile";
+import { recordAudit } from "@/lib/audit";
 
 export const runtime = "nodejs";
 
@@ -30,6 +31,13 @@ export async function PUT(req: Request, ctx: { params: { id: string } }) {
   if (!matchesRole(session, "admin")) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
+  const prev = getInvestorById(ctx.params.id);
+  if (!prev) {
+    return NextResponse.json(
+      { message: "Cadastro não encontrado." },
+      { status: 404 }
+    );
+  }
   const patch = (await req.json().catch(() => null)) as
     | Partial<InvestorProfileInput>
     | null;
@@ -44,6 +52,15 @@ export async function PUT(req: Request, ctx: { params: { id: string } }) {
         { status: 404 }
       );
     }
+    recordAudit({
+      session: session!,
+      action: "update",
+      entity: "investor_profile",
+      entityId: updated.id,
+      investorId: updated.id,
+      before: prev as unknown as Record<string, unknown>,
+      after: updated as unknown as Record<string, unknown>
+    });
     return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json(
@@ -61,6 +78,13 @@ export async function DELETE(_req: Request, ctx: { params: { id: string } }) {
   if (!matchesRole(session, "admin")) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
+  const prev = getInvestorById(ctx.params.id);
+  if (!prev) {
+    return NextResponse.json(
+      { message: "Cadastro não encontrado." },
+      { status: 404 }
+    );
+  }
   const ok = deleteInvestor(ctx.params.id);
   if (!ok) {
     return NextResponse.json(
@@ -68,5 +92,14 @@ export async function DELETE(_req: Request, ctx: { params: { id: string } }) {
       { status: 404 }
     );
   }
+  recordAudit({
+    session: session!,
+    action: "delete",
+    entity: "investor_profile",
+    entityId: prev.id,
+    investorId: prev.id,
+    before: prev as unknown as Record<string, unknown>,
+    after: null
+  });
   return new NextResponse(null, { status: 204 });
 }

@@ -1,11 +1,12 @@
 import { BarChart3, LineChart, Percent, TrendingUp, Users, Wallet } from "lucide-react";
 import {
-  MOCK_APORTES,
   buildChartEvolution,
   buildComparative,
   buildDashboardSummary,
   computeByte7ReturnRate
 } from "@/mocks/investor";
+import { listAportes } from "@/mocks/aportes";
+import { listStatements } from "@/mocks/statements";
 import { listInvestors } from "@/mocks/investorProfiles";
 import { MOCK_USINAS } from "@/mocks/usinas";
 import { Alert } from "@/components/ui/Alert";
@@ -35,20 +36,23 @@ export default function AdminDashboardPage({
 
   const isAll = selectedId === "all";
   const aportes = isAll
-    ? MOCK_APORTES
-    : MOCK_APORTES.filter((a) => a.investorId === selectedId);
+    ? listAportes()
+    : listAportes({ investorId: selectedId });
+  const statements = isAll
+    ? listStatements()
+    : listStatements({ investorId: selectedId });
 
-  const summary = buildDashboardSummary(aportes);
-  const returnRate = computeByte7ReturnRate(aportes);
-  const chartData = buildChartEvolution(aportes);
-  const comparative = buildComparative(aportes);
+  const summary = buildDashboardSummary(aportes, statements);
+  const returnRate = computeByte7ReturnRate(aportes, statements);
+  const chartData = buildChartEvolution(aportes, statements);
+  const comparative = buildComparative(aportes, statements);
 
   const usinaIds = Array.from(new Set(aportes.map((a) => a.usinaId)));
   const usinasVinculadas = MOCK_USINAS.filter((u) => usinaIds.includes(u.id));
 
   const contribCount = aportes.length;
   const activeInvestors = isAll
-    ? new Set(MOCK_APORTES.map((a) => a.investorId)).size
+    ? new Set(listAportes().map((a) => a.investorId)).size
     : 1;
 
   return (

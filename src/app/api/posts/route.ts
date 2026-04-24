@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { SESSION_COOKIE, decodeSession, matchesRole } from "@/lib/session";
+import { SESSION_COOKIE, canEditBlog, decodeSession } from "@/lib/session";
 import { createPost, listPosts } from "@/mocks/posts";
 import type { BlogPostInput, PostStatus } from "@/types/blog";
 
@@ -13,9 +13,9 @@ export async function GET(req: Request) {
     statusParam === "draft" || statusParam === "published" ? statusParam : undefined;
 
   const session = decodeSession(cookies().get(SESSION_COOKIE)?.value);
-  // Se não houver admin autenticado e não veio status explícito,
-  // entregamos apenas posts publicados (visão pública).
-  if (!matchesRole(session, "admin") && !status) {
+  // Visão pública: sem sessão com permissão de blog e sem status
+  // explícito, devolve apenas publicados.
+  if (!canEditBlog(session) && !status) {
     return NextResponse.json(listPosts({ status: "published" }));
   }
   return NextResponse.json(listPosts(status ? { status } : undefined));
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = decodeSession(cookies().get(SESSION_COOKIE)?.value);
-  if (!matchesRole(session, "admin")) {
+  if (!canEditBlog(session)) {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
   const body = (await req.json().catch(() => null)) as BlogPostInput | null;

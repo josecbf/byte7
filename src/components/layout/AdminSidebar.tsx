@@ -2,6 +2,8 @@
 
 import {
   BarChart3,
+  ClipboardList,
+  FileSpreadsheet,
   FileText,
   LayoutDashboard,
   PlusCircle,
@@ -19,6 +21,8 @@ export function AdminSidebar({ userName }: { userName: string }) {
         { href: "/admin", label: "Visão geral", icon: LayoutDashboard, match: "exact" },
         { href: "/admin/dashboard", label: "Resultados", icon: BarChart3 },
         { href: "/admin/investidores", label: "Investidores", icon: Users },
+        { href: "/admin/importacao", label: "Importação Excel", icon: FileSpreadsheet },
+        { href: "/admin/auditoria", label: "Auditoria", icon: ClipboardList },
         { href: "/admin/posts", label: "Posts", icon: FileText },
         { href: "/admin/posts/new", label: "Novo post", icon: PlusCircle, match: "exact" }
       ]}

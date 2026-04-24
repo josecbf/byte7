@@ -9,6 +9,7 @@ import type {
   InvestorProfileInput,
   InvestorProfileStatus
 } from "@/types/investorProfile";
+import { recordAudit } from "@/lib/audit";
 
 export const runtime = "nodejs";
 
@@ -42,6 +43,15 @@ export async function POST(req: Request) {
   }
   try {
     const created = createInvestor(body);
+    recordAudit({
+      session: session!,
+      action: "create",
+      entity: "investor_profile",
+      entityId: created.id,
+      investorId: created.id,
+      before: null,
+      after: created as unknown as Record<string, unknown>
+    });
     return NextResponse.json(created, { status: 201 });
   } catch (err) {
     return NextResponse.json(

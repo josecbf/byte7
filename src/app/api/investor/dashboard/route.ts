@@ -6,7 +6,10 @@ import {
   buildMonthlyEvolution
 } from "@/mocks/investor";
 import { MOCK_USINAS } from "@/mocks/usinas";
-import { getCurrentInvestorAportes } from "@/lib/currentInvestor";
+import {
+  getCurrentInvestorAportes,
+  getCurrentInvestorStatements
+} from "@/lib/currentInvestor";
 
 export const runtime = "nodejs";
 
@@ -16,10 +19,11 @@ export async function GET() {
     return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
   const aportes = getCurrentInvestorAportes();
+  const statements = getCurrentInvestorStatements();
   return NextResponse.json({
-    summary: buildDashboardSummary(aportes),
+    summary: buildDashboardSummary(aportes, statements),
     aportes,
-    evolution: buildMonthlyEvolution(aportes),
+    evolution: buildMonthlyEvolution(aportes, statements),
     usinas: MOCK_USINAS
   });
 }

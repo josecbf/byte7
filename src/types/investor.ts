@@ -6,6 +6,11 @@ export interface Aporte {
   usinaId: string;
   usinaName: string;
   reference: string; // ex.: "APT-2025-001"
+  // Append-only metadata (ADR-019)
+  supersededBy: string | null;
+  supersededAt: string | null;
+  voidedAt: string | null;
+  voidedBy: string | null;
 }
 
 export interface MonthlyEvolutionPoint {

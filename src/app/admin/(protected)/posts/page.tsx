@@ -3,7 +3,7 @@ import { PlusCircle } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { listPosts } from "@/mocks/posts";
-import { AdminPostsTable } from "./AdminPostsTable";
+import { PostsTable } from "@/components/blog/PostsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export default function AdminPostsPage() {
       </div>
 
       <Card>
-        <AdminPostsTable posts={posts} />
+        <PostsTable posts={posts} basePath="/admin" />
       </Card>
     </div>
   );

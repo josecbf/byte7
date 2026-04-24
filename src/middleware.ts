@@ -6,6 +6,7 @@ import { SESSION_COOKIE, decodeSession } from "@/lib/session";
  *
  * Protege:
  *   /admin/**       → exige sessão com role=admin (exceto /admin/login)
+ *   /editor/**      → exige sessão com role=editor (exceto /editor/login)
  *   /investidor/**  → exige sessão com role=investor (exceto /investidor/login)
  *
  * Se já estiver logado no papel adequado, redireciona o *login* de volta
@@ -31,6 +32,21 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  // Editor area
+  if (pathname.startsWith("/editor")) {
+    if (pathname === "/editor/login") {
+      if (session?.role === "editor") {
+        return NextResponse.redirect(new URL("/editor", req.url));
+      }
+      return NextResponse.next();
+    }
+    if (session?.role !== "editor") {
+      const url = new URL("/editor/login", req.url);
+      url.searchParams.set("redirect", pathname + search);
+      return NextResponse.redirect(url);
+    }
+  }
+
   // Investor area
   if (pathname.startsWith("/investidor")) {
     if (pathname === "/investidor/login") {
@@ -50,5 +66,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/investidor/:path*"]
+  matcher: ["/admin/:path*", "/editor/:path*", "/investidor/:path*"]
 };

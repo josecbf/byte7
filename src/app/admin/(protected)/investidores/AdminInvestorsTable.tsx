@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Wallet } from "lucide-react";
 import type { InvestorProfile } from "@/types/investorProfile";
 import { Button } from "@/components/ui/Button";
 import { InvestorStatusBadge } from "@/components/investor/InvestorStatusBadge";
@@ -80,6 +80,12 @@ export function AdminInvestorsTable({
               <td className="px-4 py-3 text-ink-600">{formatDate(i.updatedAt)}</td>
               <td className="px-4 py-3">
                 <div className="flex items-center justify-end gap-1.5">
+                  <Link href={`/admin/investidores/${i.id}/financeiro`}>
+                    <Button variant="outline" size="sm">
+                      <Wallet className="h-4 w-4" />
+                      Financeiro
+                    </Button>
+                  </Link>
                   <Link href={`/admin/investidores/${i.id}/edit`}>
                     <Button variant="outline" size="sm">
                       <Pencil className="h-4 w-4" />

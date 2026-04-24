@@ -205,3 +205,332 @@ A partir de agora, `vercel` sem flags gera preview; promoção requer
 `jcbezerrafh-3914`).
 
 **Pendente / próximos passos:** ver `docs/todo.md`.
+
+---
+
+## 2026-04-23 — Sessão 6 · Papel `editor` e área dedicada de edição do blog
+
+**Objetivo:** separar a área administrativa da área de edição do blog.
+Editor só mexe em posts; admin continua podendo tudo (incluindo posts).
+
+**Feito:**
+
+- Novo papel `"editor"` adicionado em `UserRole` (`src/types/auth.ts`).
+- Helper `canEditBlog(session)` em `src/lib/session.ts` — retorna true
+  para `admin` **ou** `editor`. Usado pelas route handlers de posts.
+- Seed novo usuário `usr_editor_1` · `editor@byte7.com.br` · `editor123`
+  em `src/mocks/users.ts`.
+- Auth: nova route handler `POST /api/auth/editor` (espelho da admin) e
+  método `authService.loginEditor` no client.
+- Middleware: protege `/editor/**` exigindo `role === "editor"`, com
+  `/editor/login` fora do guard (mesmo padrão de admin/investidor).
+- APIs de posts (`/api/posts`, `/api/posts/[id]`, `/api/posts/by-slug`)
+  trocaram `matchesRole(session, "admin")` por `canEditBlog(session)` —
+  admin continua funcionando e editor passa a poder CRUD completo.
+  APIs de investidores permanecem admin-only.
+- CRUD de posts extraído para componentes compartilhados com prop
+  `basePath: string`:
+  - `src/components/blog/PostsTable.tsx` (antes `AdminPostsTable`)
+  - `src/components/blog/NewPostClient.tsx` (novo)
+  - `src/components/blog/EditPostClient.tsx` (antes em `admin/posts/[id]/edit/`)
+- Admin posts pages reescritas para consumir os compartilhados com
+  `basePath="/admin"`. Arquivos antigos removidos
+  (`app/admin/(protected)/posts/AdminPostsTable.tsx` e
+  `.../[id]/edit/EditPostClient.tsx`).
+- Nova área do editor em `src/app/editor/`:
+  - `login/` → `page.tsx` (server + Suspense) + `EditorLoginForm` (client)
+  - `(protected)/layout.tsx` (guard `role=editor` + EditorSidebar)
+  - `(protected)/page.tsx` → visão geral (stats de blog)
+  - `(protected)/posts/page.tsx`, `.../new/page.tsx`, `.../[id]/edit/page.tsx`
+    (todas usam componentes compartilhados com `basePath="/editor"`).
+- Novo componente `src/components/layout/EditorSidebar.tsx` (segue
+  ADR-009: client wrapper com items próprios).
+
+**Smoke test local (`npm run start` na porta 3000):**
+
+- `/editor/login` 200; `/editor` sem cookie → 307 para `/editor/login`.
+- POST `/api/auth/editor` com senha errada → 401; com senha certa → 200
+  e cookie `byte7_session` emitido.
+- Com cookie de editor: `/editor`, `/editor/posts`, `/editor/posts/new` → 200.
+- Com cookie de editor: `/admin` e `/admin/investidores` → 307 para
+  `/admin/login` (isolamento confirmado).
+- Com cookie de editor: `POST /api/posts` criou, `PUT` atualizou, `DELETE` (204).
+- **Regressão:** admin continua entrando em `/admin/*` (posts e investidores
+  OK), investidor continua entrando em `/investidor` OK, admin **não**
+  acessa `/editor/*` (redireciona para `/editor/login`) — isso é intencional,
+  admin já tem `/admin/posts`.
+
+**Decisões registradas:** ADR-016 (papel `editor` e área dedicada com
+componentes de blog parametrizados por `basePath`).
+
+**Pendente / próximos passos:** ver `docs/todo.md`.
+
+---
+
+## 2026-04-23 — Sessão 7 · Fundamento financeiro operacional (Statements + Aportes CRUD + Auditoria)
+
+**Objetivo:** habilitar o admin a alimentar os dados financeiros que o
+investidor enxerga no portal (aportes + lançamentos mensais de
+rentabilidade/posição) com trilha de auditoria por mutação.
+
+**Feito:**
+
+**Modelos + stores**
+- Novo tipo `MonthlyStatement` em `src/types/statement.ts` com shape
+  `{investorId, month, invested, rate, balance, note?, metadados de criação}`.
+- Novo tipo `AuditLogEntry` em `src/types/audit.ts` com `{actor, action,
+  entity, investorId, before, after, source, timestamp}`.
+- Store em memória `src/mocks/statements.ts` com CRUD e unicidade por
+  `(investorId, month)` (cria outro lançamento para o mesmo mês → 409).
+- Store append-only `src/mocks/auditLog.ts` (apenas `appendAudit` e
+  `listAudit` — nunca update/delete).
+- Aportes extraídos para `src/mocks/aportes.ts` (seguindo o mesmo
+  padrão de `mocks/posts.ts`). `MOCK_APORTES` deixou de ser exportado;
+  consumidores passaram a usar `listAportes()`.
+- Helper `src/lib/audit.ts` (`recordAudit({session, action, entity,
+  entityId, investorId, before, after})`) resolve ator pela sessão e
+  delega ao `appendAudit`.
+
+**Integração com dashboard (ADR-017)**
+- `buildMonthlyEvolution(aportes, statements, rate)` agora: baseline
+  via `buildSeries` (aportes + 6% a.m.); para cada mês com statement,
+  sobrescreve `invested/balance/yieldAmount` com os valores
+  registrados. Demais meses seguem no fallback.
+- `buildDashboardSummary`, `buildChartEvolution`, `buildComparative`
+  e `computeByte7ReturnRate` agora aceitam `statements[]`.
+- Investor dashboard (`/api/investor/dashboard`) passou a ler statements
+  via `getCurrentInvestorStatements` (novo em `lib/currentInvestor.ts`).
+- Admin dashboard (`/admin/dashboard`) passa `listStatements()` (ou
+  filtrado por investidor) nas funções.
+
+**API admin-only (ADR-018)**
+- `/api/investors/[id]/aportes` (GET + POST)
+- `/api/investors/[id]/aportes/[aporteId]` (PUT + DELETE)
+- `/api/investors/[id]/statements` (GET + POST com 409 em mês duplicado)
+- `/api/investors/[id]/statements/[statementId]` (PUT + DELETE)
+- `/api/audit` (GET com filtros: `investorId`, `actorId`, `entity`,
+  `source`, `from`, `to`)
+- PUT/DELETE de `/api/investors/[id]` passaram a também registrar
+  auditoria (entidade `investor_profile`).
+
+**UI admin**
+- Nova página `src/app/admin/(protected)/investidores/[id]/financeiro/`
+  com duas seções inline: `AportesSection` e `StatementsSection`. Cada
+  uma tem formulário (create/edit) + tabela + actions (editar/excluir).
+- Botão "Financeiro" agora aparece em cada linha de
+  `/admin/investidores` e no topo da tela `/admin/investidores/[id]/edit`.
+- Nova página `src/app/admin/(protected)/auditoria/` com filtros
+  (investidor, entidade, origem, ator, período) e tabela com rows
+  expansíveis que mostram JSON `before/after` formatado.
+- Sidebar admin ganhou o item "Auditoria" (ícone ClipboardList).
+
+**Smoke test (porta 3000):**
+- Aportes CRUD por admin: lista 5, cria → 6, atualiza → 200, exclui
+  → 204, volta a 5.
+- Statements: cria 1 para Marina/mar-2026, tenta duplicar → 409,
+  atualiza → 200, listagem com 1 entrada.
+- Dashboard do investidor: mar/2026 retorna `invested=125000,
+  balance=145000` (os valores registrados pelo statement).
+- Auditoria: 5 entradas (3 aportes + 2 statements) com `actorName`,
+  `investorId` correto, filtros por `entity` e `investorId` funcionando.
+- Autorização: editor e não-autenticado recebem 401 em `/api/investors/*`
+  e `/api/audit`.
+
+**Decisões registradas:** ADR-017 (MonthlyStatement sobrescreve cálculo
+quando presente), ADR-018 (log append-only + helper único).
+
+**Pendente / próximos passos (ver `docs/todo.md`):**
+- Sessão 8 — criar login de investidor e reset de senha (admin).
+- Sessão 9 — export/import Excel das informações financeiras usando
+  SheetJS (`xlsx`), com `source: "excel_upload"` na auditoria.
+
+---
+
+## 2026-04-23 — Sessão 7b · Append-only em aportes e statements (ADR-019)
+
+**Objetivo:** garantir que nenhuma edição ou exclusão de aporte/
+statement remova a informação anterior do banco. Admin precisa ver a
+trilha completa na auditoria, mas o investidor só enxerga o registro
+ativo mais recente.
+
+**Feito:**
+
+- Campos novos em `Aporte` e `MonthlyStatement`: `supersededBy`,
+  `supersededAt`, `voidedAt`, `voidedBy`. `updatedAt/By` removidos do
+  `MonthlyStatement` — não existe update.
+- `mocks/statements.ts` reescrito:
+  - `createStatement` auto-supersede: se já houver um ativo para
+    `(investorId, month)`, o antigo é marcado com `supersededBy =
+    new.id` e o novo entra ativo.
+  - `voidStatement` substitui o antigo `deleteStatement` — faz
+    soft-delete via `voidedAt/voidedBy`.
+  - Sem `updateStatement`.
+- `mocks/aportes.ts` no mesmo padrão:
+  - `createAporte` aceita `supersedes: id` opcional (explícito, pois
+    aportes não têm chave natural de duplicata).
+  - `voidAporte` substitui `deleteAporte`.
+- `listAportes` e `listStatements` passaram a filtrar por `active`
+  por padrão. `includeInactive: true` devolve o histórico completo
+  (usado só pela tela admin `/financeiro`).
+- API routes:
+  - PUT removido em `/api/investors/[id]/aportes/[aporteId]` e
+    `/api/investors/[id]/statements/[statementId]`.
+  - POST em ambas gera auditoria dupla quando houver supersede:
+    `update` do antigo (com `note: "Substituído por X"`) + `create`
+    do novo (com `note: "Substitui Y"`).
+  - DELETE agora chama void, gera `action=delete` com
+    `note: "Invalidado (soft-delete)"` — intenção do admin
+    preservada, row continua no banco.
+- UI admin `/financeiro`:
+  - Tabelas agora mostram TODAS as linhas (ativas + superseded +
+    voided) com badge de status por linha. Linhas inativas aparecem
+    em cinza, valores com `line-through`.
+  - Botões "Editar" viraram "Corrigir" — submetem POST com
+    `supersedes: id_antigo`. "Excluir" virou "Invalidar".
+  - Ações só aparecem em linhas ativas.
+  - Header reflete contagem de ATIVOS e aviso "histórico preservado".
+
+**Smoke test local:**
+- Statements: cria #1 (errado), cria #2 mesmo mês (correção) → #1
+  marcado `supersededBy=#2`; investidor vê só #2.
+- DELETE do #2 ativo → 204 e `voidedAt/voidedBy` preenchidos.
+  Segunda tentativa → 409 (idempotente).
+- Aportes: POST com `supersedes: apt_001` → novo ativo, apt_001
+  marcado superseded. Supersede de aporte já inativo → 409.
+- Investidor: dashboard mostra exatamente 5 aportes ativos, apt_001
+  não aparece mais, total investido sobe de 130k → 135k refletindo
+  a correção de 25k → 30k.
+- Auditoria: 6 entradas cobrindo create original, update com
+  `Substituído por`, create com `Substitui`, delete com
+  `Invalidado (soft-delete)`.
+
+**Decisões registradas:** ADR-019 (append-only em aportes e
+statements).
+
+**Pendente:** sem mudanças nos próximos passos (8 e 9 seguem).
+
+---
+
+## 2026-04-23 — Sessão 8 · Criar acesso do investidor + reset de senha
+
+**Objetivo:** permitir que o admin crie o usuário de login do portal
+para um cadastro de investidor que ainda não tem acesso, e redefina
+senha de quem já tem. Toda operação fica em auditoria — sem vazar
+a senha no log.
+
+**Feito:**
+
+- Nova entidade de auditoria `user_login` em `src/types/audit.ts`
+  (adicionada também em `/api/audit`, `/admin/auditoria/page.tsx` e
+  `AuditClient.tsx` como filtro e label "Acesso").
+- `src/mocks/users.ts` ganhou CRUD lean:
+  - `MOCK_USERS` agora é inicializado a partir de `SEED_USERS`
+    (padrão append-ready).
+  - `findUserByEmail`, `getUserById`, `getUserByInvestorProfileId`,
+    `toPublicUser` (sem `password`), `createInvestorUser`,
+    `resetPassword` (mínimo 6 caracteres).
+  - Validações: e-mail duplicado → throw; investor já com login → throw.
+- APIs admin-only:
+  - `GET /api/investors/[id]/login` → retorna o usuário (sem senha)
+    ou `null` quando não existe.
+  - `POST /api/investors/[id]/login` → cria acesso; nome/e-mail
+    default do profile; 409 para regras de unicidade/senha curta.
+  - `PUT /api/investors/[id]/login/password` → redefine senha; 404 se
+    o investidor não tem acesso.
+- Auditoria:
+  - Criação → `entity=user_login`, `action=create`, `after` é o
+    usuário sanitizado (sem `password`), `note: "Acesso criado"`.
+  - Reset → `entity=user_login`, `action=update`, `before/after`
+    ambos `null` (nunca o valor da senha), `note: "Senha redefinida"`.
+- UI `/admin/investidores/[id]/edit`:
+  - Novo card `LoginSection` abaixo do cadastro.
+  - Sem acesso → form `CreateLoginCard` com nome/e-mail pré-
+    preenchidos do cadastro + senha.
+  - Com acesso → `ResetPasswordCard` mostrando o usuário atual
+    (nome + e-mail + id) e o campo "Nova senha".
+
+**Smoke test local:**
+- Fernando (inv_002) sem login: GET `/login` → `null`. POST senha
+  curta → 409. POST válido → 201 + payload sem `password`. POST
+  duplicado → 409.
+- Fernando faz login no portal: senha errada → 401, correta → 200,
+  dashboard mostra os 3 aportes (R$ 105k).
+- Reset: senha curta → 400, válida → 200. Login com senha antiga →
+  401, com a nova → 200.
+- Reset em Carla (sem login) → 404.
+- Auditoria: 2 entradas `user_login` (create + update); varredura
+  no JSON confirma que a senha nunca aparece no log.
+- Autorização: POST sem auth → 401; editor → 401.
+- Páginas `/admin/investidores/inv_002/edit` e `inv_003/edit` → 200.
+
+**Decisões registradas:** ADR-020 (acesso de investidor criado pelo
+admin, senha nunca persistida em auditoria).
+
+**Pendente:** Sessão 9 — export/import Excel (xlsx) com linha por
+`(investor, mês)` e `source: "excel_upload"` na auditoria.
+
+---
+
+## 2026-04-23 — Sessão 9 · Export e import Excel dos lançamentos mensais
+
+**Objetivo:** permitir que o admin baixe um .xlsx com todos os
+lançamentos ativos (linha = `investor × mês`), corrija/adicione
+linhas, reenvie e veja o diff aplicado. Cada mudança fica em
+auditoria com origem `excel_upload`.
+
+**Decisão de biblioteca:** trocamos `xlsx` (SheetJS) por `exceljs`.
+`xlsx` do npm tem 2 advisories **sem fix disponível** (Prototype
+Pollution + ReDoS). `exceljs` é ativamente mantido; a única
+vulnerabilidade indireta (moderate, via `uuid`) não nos afeta.
+
+**Feito:**
+
+- Nova lib `src/lib/statementsExcel.ts`:
+  - `buildStatementsWorkbook(statements, investors)` → Buffer .xlsx
+    com colunas `ID Investidor | Investidor | Mês | Investido | Taxa (%)
+    | Saldo | Observação`. Taxa sai como percentual (0.06 → 6).
+  - `parseStatementsWorkbook(buf)` → `{rows, errors}`. Valida formato
+    do mês (`YYYY-MM`), tipos numéricos, e detecta duplicatas dentro
+    do próprio arquivo.
+- Novas rotas admin-only:
+  - `GET /api/admin/statements/export` — devolve o .xlsx com
+    Content-Disposition anexo.
+  - `POST /api/admin/statements/import` — aceita multipart, parseia,
+    aplica linha a linha, devolve `ImportSummary`.
+- Apuração por linha na importação:
+  - investor inexistente → `error`.
+  - linha sem ativo correspondente → `created`.
+  - linha igual ao ativo → `unchanged` (tolerância de 0,005 para BRL
+    e 1e-6 para taxa).
+  - linha diferente do ativo → `superseded` (via `createStatement`,
+    que marca o antigo com `supersededBy` do novo — ADR-019).
+- Auditoria gera `source: "excel_upload"` com note explicando a
+  origem (`Substituído por X (linha Excel N)`, etc).
+- Nova página `/admin/importacao` (server) + `ImportClient` (client)
+  com dois cards (Exportar / Importar), upload de arquivo,
+  resumo com contadores e tabela linha a linha dos outcomes.
+  Link direto para `/admin/auditoria?source=excel_upload`.
+- Sidebar admin ganhou "Importação Excel".
+
+**Smoke test local:**
+- Export com 2 statements ativos → 200, content-type xlsx, 6903
+  bytes, arquivo válido (zip com 16 entries).
+- Round-trip do próprio export → `total=2 created=0 superseded=0
+  unchanged=2 errors=0`.
+- Arquivo com 4 linhas (1 supersede, 1 new, 1 investor inexistente,
+  1 mês inválido):
+  - `L2 superseded` (ids novos e antigos retornados).
+  - `L3 created`.
+  - `L4 error` "Investidor não encontrado".
+  - `L5 parse error` "Mês inválido".
+- `GET /api/audit?source=excel_upload` → 3 entradas (create, update
+  do superseded, create com "Substitui X (linha Excel 2)").
+- Autorização: sem auth → 401, editor → 401.
+- Páginas `/admin/importacao` e `/admin/auditoria?source=excel_upload`
+  → 200.
+
+**Decisões registradas:** ADR-021 (Excel round-trip com semântica
+idempotente e `source: "excel_upload"` na auditoria).
+
+**Pendente:** (nada do escopo da requisição original). Backlog curto
+da `todo.md` segue.
